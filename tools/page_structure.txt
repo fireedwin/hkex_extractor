@@ -1,0 +1,64 @@
+======================================================================
+A. 所有 INPUT 輸入框
+======================================================================
+[33] id='searchStockCode'
+     name=''
+     class=''
+     placeholder='Stock Code/Stock Name'
+     type='text'
+     value=''
+
+[34] id='searchDate-From'
+     name=''
+     class='input-searchDate active'
+     placeholder='yyyy/mm/dd'
+     type='text'
+     value='2026/07/30'
+
+[35] id='searchDate-To'
+     name=''
+     class='input-searchDate active'
+     placeholder='yyyy/mm/dd'
+     type='text'
+     value='2026/08/30'
+
+[36] id='searchTitle'
+     name='title'
+     class=''
+     placeholder='Keyword(s)'
+     type='text'
+     value=''
+
+======================================================================
+B. 所有 SELECT 下拉選單
+======================================================================
+======================================================================
+C. 所有 BUTTON / 可點擊元素(含 SEARCH 鈕)
+======================================================================
+<a> text='Clear All'
+     id=''
+     name=''
+     class='btn-clearall filter__btn-clearallFilters-js'
+
+<a> text='SEARCH'
+     id=''
+     name=''
+     class='filter__btn-applyFilters-js btn-blue'
+
+======================================================================
+D. PrimeFaces 風格的自訂下拉元件(可能不是標準 select)
+======================================================================
+selector=div[class*='dropdown']
+     id='selectedCategory'
+     class='combobox-group  filter__dropdown-js SR-search'
+     text='Current Securities'
+
+selector=div[class*='dropdown']
+     id=''
+     class='combobox-group searchType filter__dropdown-js'
+     text='ALL'
+
+selector=div[class*='dropdown']
+     id=''
+     class='tier1-wrap searchType-Categroy filter__dropdown-js'
+     text='All'

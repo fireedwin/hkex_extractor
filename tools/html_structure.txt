@@ -1,0 +1,372 @@
+======================================================================
+1. 文件類型容器 searchDocType(收合狀態)
+======================================================================
+<li class="filter__container-input searchDocType">
+<div class="form-input-text title-seach-form-input-text">
+<label for="searchType">
+<span>Headline Category</span>
+<span class="with-doctype"> and Document Type</span>
+</label>
+<div class="fancy-note-tooltip-hover">
+<a href="#" class="fancy-note-label tooltip" data-toggle="popup" data-target="#cms-lci-tooltip-popup">
+</a>
+</div>
+<div class="combobox-group-container clearfix">
+<div class="combobox-group searchType filter__dropdown-js">
+<div class="combobox-body" id="tier1-select">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="rbAll" href="#" aria-expanded="false">ALL</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false" style="display: none;">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<div class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<div class="droplist-item" data-value="rbAll" data-select-target="true">
+<a href="#">ALL</a>
+</div>
+<div class="droplist-item" data-value="rbAfter2006" data-select-target="false">
+<a href="#">Headline Category</a>
+</div>
+<div class="droplist-item" data-value="rbPrior2006" data-select-target="false">
+<a href="#">Document Type</a>
+</div>
+</div>
+<div class="combobox-list-scroll-bar" style="background: rgb(161, 180, 197); width: 6px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 10px; z-index: 99; right: 1px;">
+</div>
+<div class="combobox-list-scroll-rail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3 level dropdown -->
+<div class="tier1-wrap searchType-Categroy filter__dropdown-js">
+<div class="combobox-group combobox-group-disabled" id="rbAll" style="">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-1" tabindex="-1" href="#" aria-expanded="false">All</a>
+</div>
+</div>
+</div>
+</div>
+<div class="combobox-group" id="rbPrior2006" style="display: none;">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-1" href="#" aria-expanded="false">All</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<ul class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<li class="droplist-item" data-value="-2" data-selectable="true" data-select-target="true" data-select-default="true">
+<a href="#">ALL</a>
+</li>
+<li class="droplist-item" data-value="10000">
+<a href="#">Announcement</a>
+</li>
+<li class="droplist-item" data-value="10500">
+<a href="#">IPO Allotment Results</a>
+</li>
+<li class="droplist-item" data-value="11000">
+<a href="#">Results Announcement</a>
+</li>
+<li class="droplist-item" data-value="11500">
+<a href="#">Financial Statements</a>
+</li>
+<li class="droplist-item" data-value="12000">
+<a href="#">Securities Buyback</a>
+</li>
+<li class="droplist-item" data-value="13000">
+<a href="#">Information Table</a>
+</li>
+<li class="droplist-item" data-value="14000">
+<a href="#">Trading Arrangement</a>
+</li>
+<li class="droplist-item" data-value="15100">
+<a href="#">Changes in Directorships</a>
+</li>
+<li class="droplist-item" data-value="15200">
+<a href="#">Notices of General Meetings</a>
+</li>
+<li class="droplist-item" data-value="15250">
+<a href="#">Proxy Form</a>
+</li>
+<li class="droplist-item" data-value="15300">
+<a href="#">Results of General Meetings</a>
+</li>
+<li class="droplist-item" data-value="15500">
+<a href="#">Company Profile (GEM only)</a>
+</li>
+<li class="droplist-item" data-value="16000">
+<a href="#">Others</a>
+</li>
+<li class="droplist-item" data-value="17000">
+<a href="#">EFN - Tender Notice</a>
+</li>
+<li class="droplist-item" data-value="18000">
+<a href="#">Circulars</a>
+</li>
+<li class="droplist-item" data-value="19000">
+<a href="#">Prospectuses</a>
+</li>
+<li class="droplist-item" data-value="19100">
+<a href="#">Base Listing Document</a>
+</li>
+</ul>
+<div class="combobox-list-scroll-bar" style="background: rgb(161, 180, 197); width: 6px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 10px; z-index: 99; right: 1px;">
+</div>
+<div class="combobox-list-scroll-rail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="combobox-group" data-list-height="300" id="rbAfter2006" style="display: none;">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-2" href="#" aria-expanded="false">ALL</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<ul class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<li class="droplist-item" data-value="-2" data-selectable="true" data-select-target="true" data-select-default="true">
+<a href="#">ALL</a>
+</li>
+<li class="droplist-item droplist-item-level-1" data-value="10000" aria-haspopup="true" aria-expanded="false">
+<a href="#">Announcements and Notices
+
+======================================================================
+2. 嘗試點開下拉(測試多個候選元素)
+======================================================================
+  點擊 'li.searchDocType div.tier1-wrap' → 可見的 'Annual Report' 元素數: 0
+  點擊 'li.searchDocType .combobox-group' → 可見的 'Annual Report' 元素數: 0
+  點擊 "li.searchDocType [class*='combobox']" → 可見的 'Annual Report' 元素數: 0
+  點擊 'li.searchDocType div' → 可見的 'Annual Report' 元素數: 0
+  點擊 'div.tier1-wrap' → 可見的 'Annual Report' 元素數: 0
+  ⚠ 所有候選都沒展開,可能需要真人滑鼠 hover 事件
+
+======================================================================
+3. 文件類型容器(嘗試展開後)
+======================================================================
+<li class="filter__container-input searchDocType">
+<div class="form-input-text title-seach-form-input-text">
+<label for="searchType">
+<span>Headline Category</span>
+<span class="with-doctype"> and Document Type</span>
+</label>
+<div class="fancy-note-tooltip-hover">
+<a href="#" class="fancy-note-label tooltip" data-toggle="popup" data-target="#cms-lci-tooltip-popup">
+</a>
+</div>
+<div class="combobox-group-container clearfix">
+<div class="combobox-group searchType filter__dropdown-js">
+<div class="combobox-body" id="tier1-select">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="rbAll" href="#" aria-expanded="false">ALL</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false" style="display: none;">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<div class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<div class="droplist-item" data-value="rbAll" data-select-target="true">
+<a href="#">ALL</a>
+</div>
+<div class="droplist-item" data-value="rbAfter2006" data-select-target="false">
+<a href="#">Headline Category</a>
+</div>
+<div class="droplist-item" data-value="rbPrior2006" data-select-target="false">
+<a href="#">Document Type</a>
+</div>
+</div>
+<div class="combobox-list-scroll-bar" style="background: rgb(161, 180, 197); width: 6px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 10px; z-index: 99; right: 1px; height: 156px;">
+</div>
+<div class="combobox-list-scroll-rail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3 level dropdown -->
+<div class="tier1-wrap searchType-Categroy filter__dropdown-js">
+<div class="combobox-group combobox-group-disabled" id="rbAll" style="">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-1" tabindex="-1" href="#" aria-expanded="false">All</a>
+</div>
+</div>
+</div>
+</div>
+<div class="combobox-group" id="rbPrior2006" style="display: none;">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-1" href="#" aria-expanded="false">All</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<ul class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<li class="droplist-item" data-value="-2" data-selectable="true" data-select-target="true" data-select-default="true">
+<a href="#">ALL</a>
+</li>
+<li class="droplist-item" data-value="10000">
+<a href="#">Announcement</a>
+</li>
+<li class="droplist-item" data-value="10500">
+<a href="#">IPO Allotment Results</a>
+</li>
+<li class="droplist-item" data-value="11000">
+<a href="#">Results Announcement</a>
+</li>
+<li class="droplist-item" data-value="11500">
+<a href="#">Financial Statements</a>
+</li>
+<li class="droplist-item" data-value="12000">
+<a href="#">Securities Buyback</a>
+</li>
+<li class="droplist-item" data-value="13000">
+<a href="#">Information Table</a>
+</li>
+<li class="droplist-item" data-value="14000">
+<a href="#">Trading Arrangement</a>
+</li>
+<li class="droplist-item" data-value="15100">
+<a href="#">Changes in Directorships</a>
+</li>
+<li class="droplist-item" data-value="15200">
+<a href="#">Notices of General Meetings</a>
+</li>
+<li class="droplist-item" data-value="15250">
+<a href="#">Proxy Form</a>
+</li>
+<li class="droplist-item" data-value="15300">
+<a href="#">Results of General Meetings</a>
+</li>
+<li class="droplist-item" data-value="15500">
+<a href="#">Company Profile (GEM only)</a>
+</li>
+<li class="droplist-item" data-value="16000">
+<a href="#">Others</a>
+</li>
+<li class="droplist-item" data-value="17000">
+<a href="#">EFN - Tender Notice</a>
+</li>
+<li class="droplist-item" data-value="18000">
+<a href="#">Circulars</a>
+</li>
+<li class="droplist-item" data-value="19000">
+<a href="#">Prospectuses</a>
+</li>
+<li class="droplist-item" data-value="19100">
+<a href="#">Base Listing Document</a>
+</li>
+</ul>
+<div class="combobox-list-scroll-bar" style="background: rgb(161, 180, 197); width: 6px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 10px; z-index: 99; right: 1px;">
+</div>
+<div class="combobox-list-scroll-rail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="combobox-group" data-list-height="300" id="rbAfter2006" style="display: none;">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="-2" href="#" aria-expanded="false">ALL</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+<div class="combobox-list-scroll-div" style="position: relative; overflow: visible; width: auto; max-height: 300px;">
+<ul class="droplist-items" style="overflow: hidden; width: auto; max-height: 300px;">
+<li class="droplist-item" data-value="-2" data-selectable="true" data-select-target="true" data-select-default="true">
+<a href="#">ALL</a>
+</li>
+<li class="droplist-item droplist-item-level-1" data-value="10000" aria-haspopup="true" aria-expanded="false">
+<a href="#">Announcemen
+
+======================================================================
+4. 全頁所有 'Annual Report' 元素(含隱藏)
+======================================================================
+共找到 1 個
+[1] tag=a displayed=False
+    class=''
+    outerHTML='<a href="#">Annual Report</a>'
+    父元素 tag=li class='droplist-item'
+
+======================================================================
+5. 股票代號 autocomplete 結構
+======================================================================
+<li class="filter__container-input searchStockCodeName">
+<div class="form-input-text">
+<label for="searchStockCodeName">Stock Code/Stock Name</label>
+<div class="autocomplete-group">
+<div class="autocomplete-group__input-box has-value">
+<span tabindex="0" class="autocomplete-icon icon-close" style="display: inline;">
+</span>
+<input id="searchStockCode" data-auto="false" type="text" autocomplete="off" placeholder="Stock Code/Stock Name" value="" maxlength="30" role="combobox" aria-owns="autocomplete-list-0" class="">
+</div>
+<div role="listbox" id="autocomplete-list-0" class="autocomplete-suggestions" style="display: none;">
+<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;">
+<div style="overflow: hidden; width: auto; height: 250px;">
+<table>
+<tbody>
+</tbody>
+</table>
+</div>
+<div class="slimScrollBar" style="background: rgb(161, 180, 197); width: 6px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 10px; z-index: 99; right: 1px;">
+</div>
+<div class="slimScrollRail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+</div>
+</div>
+<div class="view-more-msg" style="padding: 5px;border-top:1px solid #cbcbcb;">Display 1,000 records only.  Please refine search.</div>
+</div>
+</div>
+<div class="combobox-group" id="searchStockCodePicker" style="display: none;">
+<div class="combobox-body">
+<div class="combobox-trigger-wrap">
+<div class="combobox-input-wrap" style="height: 47px;">
+<a class="combobox-field" data-select="true" data-value="" href="#" aria-expanded="false">&nbsp;</a>
+</div>
+</div>
+</div>
+<div class="combobox-boundlist" aria-expanded="false">
+<div class="combobox-picker-list-wrap">
+<div class="droplist-group">
+</div>
+</div>
+</div>
+</div>
+</div>
+<a class="reminder popup-stocks-list visibility_hidden" href="#">
+</a>
+</li>

@@ -1,0 +1,180 @@
+======================================================================
+步驟 1:點開 Headline Category 下拉(tier1-wrap)
+======================================================================
+✓ 已點擊 tier1-wrap
+--- 點開後出現的所有 <li> 選項 (selector: li) ---
+  id='' class='topbar__about'
+    text='e-Submission System'
+  id='' class='topbar__about'
+    text='Disclosure of Interests Online System'
+  id='' class='topbar__font-sizes font-size-options'
+    text='Font SizeAAA'
+  id='' class='filter__container-input searchSecuritiesType mobile-hidden'
+    text='Search Type\nCurrent Securities'
+  id='' class='filter__container-input searchStockCodeName'
+    text='Stock Code/Stock Name'
+  id='' class='filter__container-input searchDocType'
+    text='Headline Category and Document Type\nALL\nAll'
+  id='' class='filter__container-input searchDate titlesearch-searchDate'
+    text='From\nTo'
+  id='' class='filter__container-input searchNewsTitle'
+    text='News Title'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='LISTED COMPANY PUBLICATIONS\nLatest Listed Company Information\nView Publications '
+  id='' class='footer-sitemap-nav__item'
+    text='Latest Listed Company Information'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Company'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Headline Categories'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Predefined Documents'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='SHAREHOLDING DISCLOSURES\nDisclosure of Interests\nCCASS Shareholding Search\nStock'
+  id='' class='footer-sitemap-nav__item'
+    text='Disclosure of Interests'
+  id='' class='footer-sitemap-nav__item'
+    text='CCASS Shareholding Search'
+  id='' class='footer-sitemap-nav__item'
+    text='Stock Connect Shareholding Search'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='NEW LISTINGS\nApplication Proof, OC Announcements, PHIP and Related Materials\nNew'
+  id='' class='footer-sitemap-nav__item'
+    text='Application Proof, OC Announcements, PHIP and Related Materials'
+  id='' class='footer-sitemap-nav__item'
+    text='New Listing Information'
+  id='' class='footer-sitemap-nav__item'
+    text='Progress Report for New Listing Applications\nMain Board\nGEM\nOthers'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Main Board'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Others'
+  id='' class='footer-sitemap-nav__col-4 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='EXCHANGE REPORTS\nMonthly Prolonged Suspension Status Report\nMain Board\nGEM\nShare'
+  id='' class='footer-sitemap-nav__item'
+    text='Monthly Prolonged Suspension Status Report\nMain Board\nGEM'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Main Board'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__item'
+    text='Share Repurchases Reports'
+  id='' class='footer-sitemap-nav__item'
+    text='Board Meeting Notifications\nMain Board\nGEM'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Main Board'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__item'
+    text='Dividends and Other Entitlements\nMain Board\nGEM'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Main Board'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__item'
+    text='Trading Arrangement Table\nMain Board\nGEM'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='Main Board'
+  id='' class='footer-sitemap-nav__level3-item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__item'
+    text='List of Directors'
+  id='' class='footer-sitemap-nav__item'
+    text='Status Report on Delisting Proceedings and Suspensions'
+  id='' class='footer-sitemap-nav__item'
+    text='Disciplinary Sanctions'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet footer-sitemap-nav--last'
+    text='RELATED WEBSITES\nHKEX Market\nHKEX Group\nGEM\nBond Connect\nCESC\nLME'
+  id='' class='footer-sitemap-nav__item'
+    text='HKEX Market'
+  id='' class='footer-sitemap-nav__item'
+    text='HKEX Group'
+  id='' class='footer-sitemap-nav__item'
+    text='GEM'
+  id='' class='footer-sitemap-nav__item'
+    text='Bond Connect'
+  id='' class='footer-sitemap-nav__item'
+    text='CESC'
+  id='' class='footer-sitemap-nav__item'
+    text='LME'
+  id='' class='footer__nav-item'
+    text='About Us'
+  id='' class='footer__nav-item'
+    text='Contact Us'
+  id='' class='footer__nav-item'
+    text='Terms of Use'
+  id='' class='footer__nav-item'
+    text='Privacy Notice'
+  id='' class='footer__nav-item'
+    text='Cookie Notice'
+  id='' class='footer__nav-item'
+    text='Site Search'
+
+--- tier1-wrap 內的 li (selector: div.tier1-wrap ul li) ---
+  (沒有可見元素)
+
+--- droplist 類別內的 li (selector: [class*='droplist'] li) ---
+  (沒有可見元素)
+
+--- dropdown 類別內的 li (selector: [class*='dropdown'] li) ---
+  (沒有可見元素)
+
+======================================================================
+步驟 2:整頁 HTML 中搜尋 'Annual Report' 出現在什麼元素裡
+======================================================================
+  tag=a id=''
+    class=''
+    text=''
+    displayed=False
+
+======================================================================
+步驟 3:測試股票代號輸入是否跳 autocomplete
+======================================================================
+✓ 已輸入 00700
+--- autocomplete 建議清單 (selector: [class*='autocomplete'] li) ---
+  (沒有可見元素)
+
+--- suggest 建議清單 (selector: [class*='suggest'] li) ---
+  (沒有可見元素)
+
+--- 輸入後所有可見的 li (selector: ul li) ---
+  id='' class='topbar__about'
+    text='e-Submission System'
+  id='' class='topbar__about'
+    text='Disclosure of Interests Online System'
+  id='' class='topbar__font-sizes font-size-options'
+    text='Font SizeAAA'
+  id='' class='filter__container-input searchSecuritiesType mobile-hidden'
+    text='Search Type\nCurrent Securities'
+  id='' class='filter__container-input searchStockCodeName'
+    text='Stock Code/Stock Name\n00700 TENCENT\nView More'
+  id='' class='filter__container-input searchDocType'
+    text='Headline Category and Document Type\nALL\nAll'
+  id='' class='filter__container-input searchDate titlesearch-searchDate'
+    text='From\nTo'
+  id='' class='filter__container-input searchNewsTitle'
+    text='News Title'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='LISTED COMPANY PUBLICATIONS\nLatest Listed Company Information\nView Publications '
+  id='' class='footer-sitemap-nav__item'
+    text='Latest Listed Company Information'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Company'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Headline Categories'
+  id='' class='footer-sitemap-nav__item'
+    text='View Publications by Predefined Documents'
+  id='' class='footer-sitemap-nav__col-2 footer-sitemap-nav__level1-item footer-sitemap-nav__col-8-tablet'
+    text='SHAREHOLDING DISCLOSURES\nDisclosure of Interests\nCCASS Shareholding Search\nStock'
+  id='' class='footer-sitemap-nav__item'
+    text='Disclosure of Interests'
+  ...(超過上限,截斷)
+
+======================================================================
+步驟 4:Search Type 下拉(selectedCategory)的選項
+======================================================================
+✓ 已點開 selectedCategory
+--- selectedCategory 內的選項 (selector: #selectedCategory li) ---
+  (沒有可見元素)
