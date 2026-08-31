@@ -70,14 +70,31 @@ _CHUNK = 1024 * 1024
 # 分析邏輯版本
 # ──────────────────────────────────────────────────────────────
 # 這些檔案「不影響萃取結果」,所以改了它們不需要重跑全部年報。
+# 判斷標準只有一條:**同一份 PDF 餵進去,產出的 Excel 內容會不會不一樣?**
+# 會 → 必須納入;不會 → 排除。
+#
 # 其餘所有 .py 都算進邏輯版本 —— 採用白名單排除而非黑名單列舉,
 # 是因為將來新增分析模組時會**自動**被納入。若改成「只雜湊我列出的
 # 那幾個檔案」,新模組會被漏掉,又回到「安靜地給出過期資料」。
+#
+# ⚠ 往這份清單加東西要非常保守。加錯了會導致「改了分析邏輯卻沿用舊結果」,
+# 正是這個機制要防的事。加之前先問:同一份 PDF 的萃取結果真的完全不受影響嗎?
 _EXCLUDE_EXACT = {
     "pipeline.py",      # 只負責串流程,不影響單份文件的萃取結果
     "incremental.py",   # 就是本檔案
     "console.py",       # 只修 Windows 主控台編碼
     "setup.py",
+    # ── 下載層:只決定「PDF 從哪來、叫什麼名字」──────────────
+    # 帳本是用 PDF 的**內容雜湊**當 key,不是檔名。同一份 PDF 不管
+    # 是自動下載還是手動放進 downloads/,萃取結果完全一樣。
+    # 先前擴充 --type 改了 hkexnews_selenium.py,導致全部年報被判定
+    # 過期而重跑一次 —— 那次重跑是白費的。
+    "hkexnews_selenium.py",
+    "batch_download.py",
+    "hkexnews.py",      # 已棄用
+    # ── 錯誤紀錄層:只決定 error message/ 那份 txt 長什麼樣 ──────
+    # 完全不參與萃取,改它不該讓幾百份年報重跑。
+    "error_report.py",
 }
 _EXCLUDE_PREFIX = ("test_", "check_", "diagnose_", "compare_", "make_", "_")
 
@@ -92,6 +109,35 @@ def _is_logic_file(name: str) -> bool:
     return True
 
 
+def logic_digests(root: str | None = None) -> dict:
+    """
+    回傳 {檔名: 內容雜湊} —— 每個會影響萃取結果的模組各算一份。
+
+    有了逐檔雜湊,才答得出「為什麼突然全部重跑」:可以跟帳本裡上次
+    存的快照逐一比對,直接指出是哪個檔案變了。先前 error_report.py
+    被誤算進邏輯版本、害幾百份年報白重跑時,畫面上只寫「分析邏輯已更新」,
+    沒有任何線索指向兇手 —— 那次診斷是靠人去翻程式碼才找到的,
+    這種事不該再發生一次。
+    """
+    root = root or os.path.dirname(os.path.abspath(__file__))
+    try:
+        names = sorted(n for n in os.listdir(root) if _is_logic_file(n))
+    except OSError:
+        return {}
+
+    out = {}
+    for n in names:
+        p = os.path.join(root, n)
+        if not os.path.isfile(p):
+            continue
+        try:
+            with open(p, "rb") as f:
+                out[n] = hashlib.sha256(f.read()).hexdigest()[:12]
+        except OSError:
+            continue
+    return out
+
+
 def compute_logic_version(root: str | None = None) -> tuple[str, list[str]]:
     """
     把所有「會影響萃取結果」的 .py 原始碼串起來雜湊。
@@ -100,23 +146,14 @@ def compute_logic_version(root: str | None = None) -> tuple[str, list[str]]:
     讓使用者能親眼確認哪些檔案被算進去 —— 「為什麼它突然要全部重跑」
     必須要能查得出來,不能是個黑盒子。
     """
-    root = root or os.path.dirname(os.path.abspath(__file__))
-    names = sorted(n for n in os.listdir(root) if _is_logic_file(n))
-
+    digests = logic_digests(root)
     h = hashlib.sha256()
-    used = []
-    for n in names:
-        p = os.path.join(root, n)
-        if not os.path.isfile(p):
-            continue
-        with open(p, "rb") as f:
-            data = f.read()
+    for n in sorted(digests):
         # 連檔名一起雜湊:只改檔名(等於換了模組)也要算版本變動
         h.update(n.encode("utf-8"))
         h.update(b"\0")
-        h.update(data)
-        used.append(n)
-    return h.hexdigest()[:16], used
+        h.update(digests[n].encode("ascii"))
+    return h.hexdigest()[:16], list(sorted(digests))
 
 
 def file_fingerprint(path: str) -> str:
@@ -149,10 +186,31 @@ class Ledger:
         self.out_dir = out_dir
         self.path = path or os.path.join(out_dir, LEDGER_NAME)
         self.logic_version, self.logic_files = compute_logic_version(self.root)
+        self.logic_digests = logic_digests(self.root)
         self._data = self._load()
         self.reasons = {}          # split() 之後填入:路徑 → 判斷理由
         # 本次執行的統計,供最後總結用
         self.stats = {"skipped": 0, "recorded": 0, "hash_seconds": 0.0}
+
+    def logic_changes(self) -> dict:
+        """
+        比對帳本裡上次存的模組快照,回傳哪些檔案變了:
+            {"added": [...], "removed": [...], "modified": [...]}
+
+        這是「為什麼突然全部重跑」的答案。沒有它,使用者只會看到
+        「分析邏輯已更新」,卻無從得知是自己改的 config.py、還是某個
+        根本不該影響萃取的模組(例如錯誤紀錄層)被誤算進去。
+        空 dict 代表沒有可比對的舊快照(第一次跑,或舊版帳本)。
+        """
+        old = self._data.get("logic_snapshot") or {}
+        if not old:
+            return {}
+        new = self.logic_digests
+        return {
+            "added": sorted(set(new) - set(old)),
+            "removed": sorted(set(old) - set(new)),
+            "modified": sorted(n for n in set(old) & set(new) if old[n] != new[n]),
+        }
 
     # ── 讀寫 ────────────────────────────────────────────────
     def _load(self) -> dict:
@@ -176,6 +234,8 @@ class Ledger:
 
     def save(self) -> None:
         """原子寫入:先寫暫存檔再 replace,中途斷電不會留下半個壞檔。"""
+        # 每次存檔都更新模組快照,下次執行才比對得出「是哪個檔案變了」
+        self._data["logic_snapshot"] = dict(self.logic_digests)
         os.makedirs(os.path.dirname(os.path.abspath(self.path)), exist_ok=True)
         tmp = self.path + ".tmp"
         with open(tmp, "w", encoding="utf-8") as f:

@@ -27,6 +27,10 @@ python3 pipeline.py --pdf "downloads/007*.pdf"
 # 下載時顯示瀏覽器視窗(除錯用)
 python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --show-browser
 
+# 下載其他文件類型(預設 annual_report;可用選項見 config.DOC_TYPES)
+python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --type interim_report
+python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --type major_transaction
+
 # 加上 AI 語意層
 python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --ai
 
@@ -90,12 +94,17 @@ logger = logging.getLogger("pipeline")
 logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
 
 
-def analyse(pdf_paths, out_dir, use_ai, ledger=None):
+def analyse(pdf_paths, out_dir, use_ai, ledger=None, reporter=None):
     """
     呼叫既有的分析引擎處理每一份 PDF。
 
     ledger 不是 None 時,每分析成功一份就立刻寫入帳本 —— 不等整批跑完。
     跑到第 150 份才當掉時,前面 149 份的成果要保得住;重跑只補剩下的。
+
+    reporter 不是 None 時,會攔截每一份的分析輸出並比對 config.ERROR_PATTERNS,
+    把「交叉驗證未通過」「0 個科目」這類問題記進錯誤紀錄。這些訊息目前
+    是 financials.py 等模組直接印出來的,process_one() 沒有結構化回傳,
+    所以只能從輸出文字取得(見 error_report.py 檔頭說明)。
     """
     from run import process_one
 
@@ -104,10 +113,29 @@ def analyse(pdf_paths, out_dir, use_ai, ledger=None):
         if not os.path.exists(p):
             logger.warning(f"[{i}/{len(pdf_paths)}] 找不到檔案,略過: {p}")
             failures.append((os.path.basename(p), "檔案不存在"))
+            if reporter is not None:
+                reporter.add(f"找不到檔案:{p}", stock=None, severity="high")
             continue
         logger.info(f"[{i}/{len(pdf_paths)}] 分析 {os.path.basename(p)}")
+
+        stock = None
+        if reporter is not None:
+            from error_report import stock_from_name
+            stock = stock_from_name(p)
+
         try:
-            out = process_one(p, out_dir, use_ai)
+            if reporter is not None:
+                from error_report import OutputCapture
+                with OutputCapture() as cap:
+                    out = process_one(p, out_dir, use_ai)
+                # 分析「成功」不代表結果沒問題 —— 掃描過程輸出,
+                # 把畫面上看起來像綠燈、實際有問題的狀況挑出來
+                hits = reporter.scan_and_add(cap.text(), filename=out, stock=stock)
+                if hits:
+                    logger.warning(f"  ⚠ 這份有 {len(hits)} 項需要注意,已記入錯誤紀錄")
+            else:
+                out = process_one(p, out_dir, use_ai)
+
             results.append(out)
             if ledger is not None:
                 # 只有分析成功才記錄。失敗的不寫進帳本,下次一定會重跑。
@@ -120,10 +148,47 @@ def analyse(pdf_paths, out_dir, use_ai, ledger=None):
             logger.error(f"  分析失敗: {e}")
             traceback.print_exc()
             failures.append((os.path.basename(p), str(e)[:80]))
+            if reporter is not None:
+                reporter.add(f"分析失敗({os.path.basename(p)}):{str(e)[:80]}",
+                             filename=None, stock=stock, severity="high")
     return results, failures
 
 
+def _save_report(reporter):
+    """
+    寫出錯誤紀錄並告訴使用者位置。沒有問題就不建檔,也不印任何東西 ——
+    每次都印「0 筆問題」只會讓真的有問題那次被忽略。
+    """
+    if reporter is None or len(reporter) == 0:
+        return
+    path = reporter.save()
+    logger.warning("")
+    logger.warning("=" * 60)
+    logger.warning(f"有 {len(reporter)} 項需要注意")
+    logger.warning("=" * 60)
+    if path:
+        logger.warning(f"詳細清單已寫入: {path}")
+    else:
+        # 寫檔失敗也不能讓問題消失,直接印在畫面上
+        logger.warning("(紀錄檔寫入失敗,以下直接列出)")
+        for e in reporter.entries:
+            logger.warning(f"  {e['file']} | {e['stock']} | {e['what']}")
+
+
 def main():
+    # --type 的選項來自 config.DOC_TYPES(領域知識層),不是寫死在這裡 ——
+    # 以後在 config.py 加一種通函類型,--type 的選單會自動跟著多一項。
+    try:
+        import config as _C
+        _doc_type_choices = list(_C.DOC_TYPES.keys())
+        _default_doc_type = getattr(_C, "DEFAULT_DOC_TYPE", "annual_report")
+    except Exception:
+        # config.py 理論上一定跟 pipeline.py 放在一起,這裡只是防呆:
+        # 就算真的匯入失敗,也讓 --type annual_report 這個最基本的情境還能跑,
+        # 不要因為選單建不出來就讓整支程式無法啟動。
+        _doc_type_choices = None
+        _default_doc_type = "annual_report"
+
     ap = argparse.ArgumentParser(
         description="HKEX 年報下載 + 估值資料萃取(端到端)")
     ap.add_argument("--stocks", help="股票代號清單,逗號分隔,例如 00700,00731")
@@ -132,6 +197,12 @@ def main():
                          "資料量大且對網站負擔重,不建議面試現場示範)")
     ap.add_argument("--from", dest="from_date", help="起始日 YYYYMMDD")
     ap.add_argument("--to", dest="to_date", help="結束日 YYYYMMDD")
+    ap.add_argument("--type", dest="doc_type", default=_default_doc_type,
+                    choices=_doc_type_choices,
+                    help="要下載的文件類型(見 config.DOC_TYPES),預設年報。"
+                         "選單展開已用 check_menu.py 驗證過全部七種,"
+                         "但除 annual_report 外的搜尋結果內容還沒實機驗證,"
+                         "第一次用建議加 --show-browser 肉眼確認結果")
     ap.add_argument("--pdf", action="append",
                     help="本機 PDF 路徑、資料夾、或萬用字元樣式(可重複)。"
                          "指定資料夾會處理裡面所有 PDF;有指定就不會下載")
@@ -149,7 +220,22 @@ def main():
                     help="完全停用增量處理:不讀也不寫帳本")
     ap.add_argument("--reset-ledger", action="store_true",
                     help="清空帳本後結束(下次執行等同第一次跑)")
+    ap.add_argument("--error-dir", default=None,
+                    help="錯誤紀錄資料夾(預設見 config.ERROR_DIR)")
+    ap.add_argument("--no-error-report", action="store_true",
+                    help="不產生錯誤紀錄檔")
     args = ap.parse_args()
+
+    # ── 錯誤紀錄 ───────────────────────────────────────
+    # 執行時間在這裡就固定下來,整份紀錄共用同一個時間戳 ——
+    # 使用者要對照的是「哪一次執行出的問題」,不是每列各自的秒數。
+    reporter = None
+    if not args.no_error_report:
+        try:
+            from error_report import ErrorReport
+            reporter = ErrorReport(out_dir=args.error_dir, root=HERE)
+        except Exception as e:
+            logger.warning(f"錯誤紀錄無法啟用({e}),本次不產生紀錄檔")
 
     # ── 增量處理帳本 ───────────────────────────────────
     ledger = None
@@ -200,11 +286,17 @@ def main():
                  if args.stocks else [])
         logger.info("=" * 60)
         if codes:
-            logger.info(f"階段一:下載 — {len(codes)} 間公司 {codes}")
+            logger.info(f"階段一:下載 — {len(codes)} 間公司 {codes}"
+                        f"(類型: {args.doc_type})")
         else:
-            logger.info(f"階段一:下載 — 全市場 {args.from_date} ~ {args.to_date}")
+            logger.info(f"階段一:下載 — 全市場 {args.from_date} ~ {args.to_date}"
+                        f"(類型: {args.doc_type})")
             logger.warning("全市場模式資料量大,且會對 HKEXnews 送出大量查詢。")
             logger.warning("查詢區間會自動切成 30 天一段(不指定股票時的網站上限)。")
+        if args.doc_type != "annual_report":
+            logger.info(f"⚠ 「{args.doc_type}」選單展開已驗證過,"
+                        f"但搜尋結果內容還沒實機驗證,"
+                        f"如果是第一次用,建議先加 --show-browser 肉眼確認結果正確")
         logger.info("=" * 60)
 
         # 明確印出實際載入的檔案 —— 這樣「改了沒生效」一眼就能看出來
@@ -219,15 +311,21 @@ def main():
 
         dl = BatchDownloader(out_dir=args.downloads,
                              headless=not args.show_browser,
-                             polite_delay=args.delay)
+                             polite_delay=args.delay,
+                             reporter=reporter)
         if codes:
-            filings = dl.run_for_companies(codes, args.from_date, args.to_date)
+            filings = dl.run_for_companies(codes, args.from_date, args.to_date,
+                                           doc_type=args.doc_type)
         else:
-            filings = dl.run_for_whole_market(args.from_date, args.to_date)
+            filings = dl.run_for_whole_market(args.from_date, args.to_date,
+                                              doc_type=args.doc_type)
         logger.info(f"查得 {len(filings)} 筆")
         pdfs += dl.download(filings)
 
     if not pdfs:
+        # 查無結果也要留紀錄:這正是使用者事後想知道「那天到底查了什麼、
+        # 為什麼沒東西」的情境。先寫檔再結束。
+        _save_report(reporter)
         ap.error("沒有可分析的 PDF。請用 --stocks / --all-market 下載,"
                  "或用 --pdf 指定本機檔案或資料夾")
 
@@ -258,6 +356,22 @@ def main():
             if relog:
                 logger.info(f"分析邏輯已更新,{len(relog)} 份既有結果視為過期,"
                             f"重新分析以免給出舊版擷取結果")
+                # 指出到底是哪個檔案變了 —— 不然使用者只會看到「全部重跑」
+                # 卻不知道是自己改的 config.py,還是某個不該影響萃取的
+                # 模組被誤算進邏輯版本。
+                ch = ledger.logic_changes()
+                bits = []
+                if ch.get("modified"):
+                    bits.append(f"已修改: {', '.join(ch['modified'])}")
+                if ch.get("added"):
+                    bits.append(f"新增: {', '.join(ch['added'])}")
+                if ch.get("removed"):
+                    bits.append(f"移除: {', '.join(ch['removed'])}")
+                if bits:
+                    logger.info(f"  變動的模組 — {' / '.join(bits)}")
+                else:
+                    logger.info("  (帳本沒有舊的模組快照可比對,"
+                                "下次執行起就能指出是哪個檔案變動)")
             pdfs = todo
 
     if not pdfs:
@@ -268,9 +382,11 @@ def main():
         for _, _, outs in skipped:
             for o in outs:
                 print(" -", o)
+        _save_report(reporter)
         return
 
-    outputs, failures = analyse(pdfs, args.out, args.ai, ledger=ledger)
+    outputs, failures = analyse(pdfs, args.out, args.ai, ledger=ledger,
+                                reporter=reporter)
 
     # ── 總結 ───────────────────────────────────────────
     logger.info("")
@@ -296,6 +412,8 @@ def main():
         logger.warning(f"以下 {len(failures)} 份分析失敗,需要人手處理:")
         for name, reason in failures:
             logger.warning(f"  ✗ {name} — {reason}")
+
+    _save_report(reporter)
 
 
 if __name__ == "__main__":

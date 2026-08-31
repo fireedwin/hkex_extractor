@@ -43,6 +43,19 @@ def main():
     print(f"已記錄 {len(entries)} 份文件,其中 {led.stale_count()} 份是舊邏輯版本產生的")
     if led.stale_count():
         print("→ 這些會在下次執行時自動重新分析(避免給出舊版擷取結果)")
+
+    # 「為什麼突然全部重跑」要能直接查到答案,不用去翻程式碼
+    ch = led.logic_changes()
+    if ch and (ch.get("modified") or ch.get("added") or ch.get("removed")):
+        print()
+        print("自帳本上次存檔以來,以下模組有變動(這就是全部重跑的原因):")
+        for label, key in (("已修改", "modified"), ("新增", "added"), ("移除", "removed")):
+            for n in ch.get(key, []):
+                print(f"    {label}  {n}")
+        print("  若其中有不該影響萃取結果的檔案,把它加進 incremental.py 的")
+        print("  _EXCLUDE_EXACT,以後改它就不會再觸發全量重跑。")
+    elif ch:
+        print("\n模組快照與帳本一致,沒有因為程式碼變動而需要重跑的情況。")
     print()
 
     if not args.target:

@@ -56,6 +56,15 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     for n in ("config.py", "incremental.py"):
         shutil.copy(os.path.join(here, n), root)
+    # 造出專案裡其他模組的替身,才測得出「哪些該算進邏輯版本、哪些不該」。
+    # 內容不重要,重要的是檔名 —— 排除規則是按檔名判斷的。
+    for n in ("pdf_reader.py", "scanner.py", "financials.py", "excel_out.py",
+              "ai_layer.py", "run.py",                    # 參與萃取,該納入
+              "hkexnews_selenium.py", "batch_download.py",  # 只負責下載,不該納入
+              "error_report.py",                            # 只負責記錄,不該納入
+              "console.py", "pipeline.py"):                 # 既有排除項
+        with open(os.path.join(root, n), "w", encoding="utf-8") as f:
+            f.write(f"# {n}\n")
     local = []
     for p in pdfs:
         d = os.path.join(dl_dir, os.path.basename(p))
@@ -167,6 +176,60 @@ def main():
     print(f"  {len(local)} 份 / {total_mb:.1f} MB → {sec*1000:.0f} ms "
           f"({total_mb/sec:.0f} MB/s)")
     print(f"  推算 200 份(平均 5 MB)約 {1000/ (total_mb/sec):.1f} 秒")
+
+    # ── 情境 9:哪些模組該/不該觸發全量重跑 ──────────────
+    print("\n情境 9:只有「會改變萃取結果」的模組才該讓帳本失效")
+    led9 = Ledger(out_dir=out_dir, root=root)
+    led9.clear()
+    for p in local:
+        led9.record(p, outs.get(p, fake_output(out_dir, p)))
+    base_v = led9.logic_version
+
+    # 不該觸發:下載層與錯誤紀錄層 —— 帳本用 PDF 內容雜湊當 key,
+    # 「這份 PDF 怎麼來的」「錯誤怎麼記」都不影響它的萃取結果
+    for name in ("hkexnews_selenium.py", "batch_download.py", "error_report.py"):
+        with open(os.path.join(root, name), "a", encoding="utf-8") as f:
+            f.write(f"\n# 改一行 {name}\n")
+    v_after, _ = compute_logic_version(root)
+    ok(v_after == base_v,
+       "改下載層/錯誤紀錄層,邏輯版本不變(不會白白重跑幾百份)",
+       f"{base_v} → {v_after}")
+    led9b = Ledger(out_dir=out_dir, root=root)
+    todo, skipped = led9b.split(local)
+    ok(not todo, "→ 所有文件仍正常跳過", f"待分析 {len(todo)}")
+
+    # 該觸發:任何參與萃取的模組
+    for name in ("config.py", "financials.py", "scanner.py", "pdf_reader.py"):
+        before, _ = compute_logic_version(root)
+        with open(os.path.join(root, name), "a", encoding="utf-8") as f:
+            f.write(f"\n# 改一行 {name}\n")
+        after, _ = compute_logic_version(root)
+        ok(after != before, f"改 {name},邏輯版本必須改變(否則會給出過期結果)")
+
+    # ── 情境 10:要能指出是「哪個檔案」變了 ────────────────
+    print("\n情境 10:全部重跑時要說得出兇手是哪個模組")
+    led10 = Ledger(out_dir=out_dir, root=root)
+    led10.clear()
+    for p in local:
+        led10.record(p, outs.get(p, fake_output(out_dir, p)))
+    with open(os.path.join(root, "financials.py"), "a", encoding="utf-8") as f:
+        f.write("\n# 修正稅務抵免判斷\n")
+    led10b = Ledger(out_dir=out_dir, root=root)
+    ch = led10b.logic_changes()
+    ok("financials.py" in ch.get("modified", []),
+       "指出 financials.py 被修改", ch.get("modified"))
+    ok("config.py" not in ch.get("modified", []),
+       "沒有把沒動過的檔案也算進去", ch.get("modified"))
+
+    # 新增一個分析模組也要看得出來(而且必須觸發重跑)
+    with open(os.path.join(root, "new_analysis_step.py"), "w", encoding="utf-8") as f:
+        f.write("# 將來新增的分析模組\n")
+    led10c = Ledger(out_dir=out_dir, root=root)
+    ok("new_analysis_step.py" in led10c.logic_changes().get("added", []),
+       "新增的分析模組會被偵測為 added(白名單排除的安全性沒有被破壞)")
+    todo10, _ = led10c.split(local)
+    ok(len(todo10) == len(local), "→ 而且確實觸發全部重新分析")
+    os.remove(os.path.join(root, "new_analysis_step.py"))
 
     shutil.rmtree(work, ignore_errors=True)
     print(f"\n{'='*56}")

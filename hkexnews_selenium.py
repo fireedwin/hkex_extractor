@@ -89,9 +89,9 @@ class SELECTORS:
     CATEGORY_FIELD = "#rbAfter2006 a.combobox-field"
     CATEGORY_LEVEL1_ITEM = "#rbAfter2006 li.droplist-item-level-1"
 
-    # 目標分類與文件(用可見文字比對,比 data-value 穩定易讀)
-    CATEGORY_FINANCIAL = "Financial Statements"      # 「Financial Statements/ESG Information」
-    DOC_TYPE_OPTION_ANNUAL_REPORT = "Annual Report"
+    # 目標分類與文件路徑改由 config.DOC_TYPES 統一管理(領域知識層),
+    # 這裡不再寫死。CATEGORY_LEVEL1_ITEM 是路徑第一段的容器選擇器,
+    # 第二段以後用可見文字比對展開,深度不限(見 set_document_type)。
 
     # ── 搜尋結果(仍待確認:要有結果才存在)──────────────
     RESULT_ROW = "table tbody tr"                        # ← 待確認
@@ -114,6 +114,10 @@ class Filing:
     title: str
     date: str
     url: str
+    # 標記這筆資料是用哪個文件類型查到的,只影響檔名(避免不同類型撞檔名),
+    # 不影響分析 —— pipeline.py 的增量處理帳本是用 PDF 內容雜湊當 key,
+    # 跟檔名無關。
+    doc_type: str = "annual_report"
 
     def clean_company(self) -> str:
         """
@@ -144,7 +148,23 @@ class Filing:
         return digits or "00000000"
 
     def local_filename(self) -> str:
-        safe = re.sub(r"[^\w\-]+", "_", f"{self.clean_code()}_{self.clean_company()}")[:50]
+        """
+        檔名裡加上文件類型標籤(除了年報)是刻意的:同一間公司同一天
+        有可能同時刊發年報和通函,純用「代號+公司+日期」當檔名,
+        後選中的那份會因為「檔案已存在」被誤判成已下載而跳過 ——
+        這是會漏資料的靜默失敗。annual_report 的 tag 留空,
+        不改變既有使用者 downloads/ 資料夾裡已經下載好的檔名。
+        """
+        try:
+            import config as _C
+            tag = _C.DOC_TYPES.get(self.doc_type, {}).get("filename_tag", "")
+        except Exception:
+            tag = "" if self.doc_type == "annual_report" else self.doc_type.upper()[:12]
+
+        base = f"{self.clean_code()}_{self.clean_company()}"
+        if tag:
+            base = f"{base}_{tag}"
+        safe = re.sub(r"[^\w\-]+", "_", base)[:50]
         return f"{safe}_{self.iso_date()}.pdf"
 
 
@@ -208,6 +228,10 @@ class HKEXBrowser:
         self.driver = webdriver.Chrome(options=opts)
         self.wait = WebDriverWait(self.driver, timeout)
         self.timeout = timeout
+        # 上一次 search_all_pages 回傳 0 筆的原因。空字串代表「真的查無結果」。
+        # 「查無此類文件」和「選單沒設定成功」對使用者是完全不同的兩件事,
+        # 都回傳空清單卻不說明是哪一種,等於把判斷責任丟回給人。
+        self.last_error = ""
 
     def close(self):
         self.driver.quit()
@@ -334,24 +358,134 @@ class HKEXBrowser:
                 el, val)
         logger.info(f"    日期區間 {fmt(from_date)} ~ {fmt(to_date)}")
 
-    def set_document_type_annual_report(self):
+    # ── 巢狀選單操作的共用小工具 ──────────────────────────
+    @staticmethod
+    def _xpath_literal(text: str) -> str:
         """
-        選擇「年報」。這是整段程式最繁瑣的部分,因為是三層巢狀自訂選單:
-
-          第1步 點開 #tier1-select
-          第2步 選「Headline Category」→ 隱藏的 #rbAfter2006 才會顯示
-          第3步 點開 #rbAfter2006
-          第4步 hover 到「Financial Statements/ESG Information」展開第三層
-          第5步 點「Annual Report」
-
-        跟使用者手動操作的步數一致。
+        把字串安全地包成 XPath 字面值。HKEXnews 的選項文字含有逗號、
+        斜線(例如 'Environmental, Social and Governance Information/Report'),
+        將來也可能出現單引號,直接用 f-string 拼會產生壞掉的 XPath。
         """
+        if "'" not in text:
+            return f"'{text}'"
+        parts = text.split("'")
+        return "concat(" + ", \"'\", ".join(f"'{p}'" for p in parts) + ")"
+
+    def _menu_matches(self, label: str):
+        """
+        找出目前畫面上「整個元素的文字剛好等於 label」的可見元素。
+
+        用 normalize-space(.) 而不是 normalize-space(text()):
+        text() 只取第一個文字節點,選項若被包在 <span> 之類的內層標籤裡
+        就會抓不到 —— 這正是 Major Transaction 找不到的可能原因之一。
+        用 . 取整個子樹文字則不會有這個問題,而且因為要求「完全相等」,
+        包含更多內容的外層容器自然不會誤中。
+
+        回傳的清單依文字長度排序後,同一個選項通常會有巢狀的兩三個元素
+        (li > a > span),全部保留 —— 因為「該 hover 哪一個才會展開子選單」
+        沒辦法從外面看出來,後面會逐一試,用「子選單有沒有真的出現」
+        當判準,而不是猜。
+        """
+        from selenium.webdriver.common.by import By
+        lit = self._xpath_literal(label)
+        xp = (f"//li[normalize-space(.)={lit}]"
+              f" | //a[normalize-space(.)={lit}]"
+              f" | //span[normalize-space(.)={lit}]"
+              f" | //div[normalize-space(.)={lit}]")
+        try:
+            return [e for e in self.driver.find_elements(By.XPATH, xp)
+                    if e.is_displayed()]
+        except Exception:
+            return []
+
+    def _wait_menu_item(self, label: str, timeout: float = 2.5):
+        """輪詢等待某個選項出現,回傳找到的元素清單(逾時則空清單)。"""
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            els = self._menu_matches(label)
+            if els:
+                return els
+            time.sleep(0.25)
+        return []
+
+    def _expand_to(self, parents, next_label: str, tries: int = 3):
+        """
+        想辦法讓 next_label 出現在畫面上,回傳 (成功與否, next_label 的元素清單)。
+
+        對每個候選父元素,依序試 hover → 點擊 → 再 hover,每一步都用
+        「next_label 有沒有真的出現」來判斷成功,而不是假設某個操作一定有效。
+
+        為什麼要這樣寫:實測發現對 Circulars 這種第二層選單,單純 hover
+        有時候展不開(時好時壞),而且該 hover 的可能是 <li> 而不是裡面的
+        <a>。與其猜哪一個對,不如全部試一遍並檢查結果 —— 多花幾秒,
+        換取不會靜靜地選錯分類。
+        """
+        for attempt in range(1, tries + 1):
+            for parent in parents:
+                try:
+                    self._hover(parent)
+                except Exception:
+                    continue
+                els = self._wait_menu_item(next_label, 2.0)
+                if els:
+                    return True, els
+
+                try:
+                    self._js_click(parent)
+                except Exception:
+                    continue
+                els = self._wait_menu_item(next_label, 2.0)
+                if els:
+                    return True, els
+
+                # 點擊有可能反而把選單收起來,再 hover 一次補救
+                try:
+                    self._hover(parent)
+                except Exception:
+                    continue
+                els = self._wait_menu_item(next_label, 1.5)
+                if els:
+                    return True, els
+
+            if attempt < tries:
+                logger.info(f"    「{next_label}」還沒出現,重試展開 {attempt}/{tries - 1}")
+                time.sleep(0.8)
+        return False, []
+
+    def _selected_category_text(self) -> str:
+        """讀出第二段下拉目前顯示的文字,用來驗證真的選中了。"""
+        from selenium.webdriver.common.by import By
+        try:
+            el = self.driver.find_element(By.CSS_SELECTOR, SELECTORS.CATEGORY_FIELD)
+            return (el.text or "").strip()
+        except Exception:
+            return ""
+
+    def set_document_type(self, path: List[str]) -> bool:
+        """
+        依 path 展開巢狀選單並選取最後一層。**回傳是否成功**。
+
+        path 來自 config.DOC_TYPES,例如:
+            ["Financial Statements/ESG Information", "Annual Report"]      (兩層)
+            ["Circulars", "Notifiable Transactions", "Major Transaction"]  (三層)
+
+        回傳值很重要,不是裝飾用的:選不到文件類型時,HKEXnews 會用
+        「ALL」去搜尋,結果看起來很正常(而且筆數更多),但拿到的是全類型
+        公告,卻會被下游標成使用者指定的類型。呼叫端必須據此中止,
+        絕不能把這種結果當成查詢成功 —— 這是最典型的「安靜的失敗」。
+
+        每一層都用「下一層有沒有真的出現」來驗證,最後再讀下拉欄位的
+        文字確認選中的就是要的那一項,而不是假設點下去就成功。
+        """
+        if not path:
+            raise ValueError("set_document_type 需要至少一段路徑")
+
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support import expected_conditions as EC
 
-        # 第1步:點開第一段下拉
+        # 第1步:點開第一段下拉(ALL / Headline Category / Document Type)
         self._js_click(self._wait_visible(SELECTORS.TIER1_FIELD))
-        time.sleep(1.2)
+        time.sleep(1.0)
 
         # 第2步:選「Headline Category」
         try:
@@ -359,10 +493,10 @@ class HKEXBrowser:
                 By.CSS_SELECTOR, SELECTORS.TIER1_OPTION_HEADLINE_CATEGORY)
             self._js_click(opt)
             logger.info("    已選 Headline Category 模式")
-            time.sleep(1.5)
+            time.sleep(1.2)
         except Exception as e:
             logger.error(f"    找不到 Headline Category 選項: {e}")
-            return
+            return False
 
         # 等 #rbAfter2006 從 display:none 變可見
         try:
@@ -373,57 +507,85 @@ class HKEXBrowser:
 
         # 第3步:點開第二段下拉
         self._js_click(self._wait_visible(SELECTORS.CATEGORY_FIELD))
-        time.sleep(1.5)
+        time.sleep(1.2)
 
-        # 第4步:hover 到「Financial Statements/ESG Information」
+        # 第4步:第一層(Circulars / Financial Statements/ESG Information / ...)
         level1 = [e for e in self.driver.find_elements(
             By.CSS_SELECTOR, SELECTORS.CATEGORY_LEVEL1_ITEM) if e.is_displayed()]
-        target = None
-        for el in level1:
-            if SELECTORS.CATEGORY_FINANCIAL.lower() in (el.text or "").lower():
-                target = el
-                break
-        if target is None:
-            logger.error(f"    找不到分類「{SELECTORS.CATEGORY_FINANCIAL}」,"
+        head = path[0].split("/")[0].strip().lower()
+        current = [e for e in level1 if head in (e.text or "").strip().lower()]
+        if not current:
+            logger.error(f"    找不到分類「{path[0]}」,"
                          f"目前可見的分類: {[e.text.strip()[:30] for e in level1]}")
-            return
+            return False
 
-        self._hover(target)
-        time.sleep(1.5)
-        logger.info("    已展開 Financial Statements/ESG Information")
+        # 中間層:每一段都要先確認下一段真的出現了才往下走
+        for depth in range(1, len(path)):
+            label = path[depth]
+            okay, items = self._expand_to(current, label)
+            if not okay:
+                visible = self._visible_menu_labels()
+                logger.error(f"    展開「{path[depth - 1]}」後找不到「{label}」")
+                logger.error(f"    目前這一層看得到的選項: {visible}")
+                logger.error(f"    → 請用 check_menu.py 對照真實頁面校正 "
+                             f"config.DOC_TYPES 裡的文字")
+                return False
 
-        # 第5步:點「Annual Report」
+            if depth < len(path) - 1:
+                current = items
+                logger.info(f"    已展開 {label}")
+                continue
+
+            # 最後一層:點擊選取,並逐一嘗試候選元素直到欄位文字確認選中
+            for el in items:
+                try:
+                    self._js_click(el)
+                except Exception:
+                    continue
+                time.sleep(1.0)
+                shown = self._selected_category_text()
+                if label.lower() in shown.lower():
+                    logger.info(f"    已選取 {' → '.join(path)}(欄位顯示: {shown[:40]})")
+                    return True
+
+            shown = self._selected_category_text()
+            logger.error(f"    點了「{label}」但下拉欄位仍顯示「{shown[:40]}」,"
+                         f"無法確認有選中")
+            return False
+
+        return False
+
+    def _visible_menu_labels(self, limit: int = 25) -> list:
+        """
+        列出目前畫面上可見的選單項目文字,失敗時印出來給人對照用。
+        沒有這個,使用者只會看到「找不到 X」卻不知道實際有什麼可選。
+        """
+        from selenium.webdriver.common.by import By
+        out = []
         try:
-            items = [e for e in self.driver.find_elements(
-                By.XPATH,
-                f"//a[normalize-space(text())='{SELECTORS.DOC_TYPE_OPTION_ANNUAL_REPORT}']")
-                if e.is_displayed()]
-            if items:
-                self._js_click(items[0])
-                logger.info("    已選取 Annual Report")
-                time.sleep(1.2)
-            else:
-                # hover 沒展開就改用點擊試一次
-                self._js_click(target)
-                time.sleep(1.5)
-                items = [e for e in self.driver.find_elements(
-                    By.XPATH,
-                    f"//a[normalize-space(text())='{SELECTORS.DOC_TYPE_OPTION_ANNUAL_REPORT}']")
-                    if e.is_displayed()]
-                if items:
-                    self._js_click(items[0])
-                    logger.info("    已選取 Annual Report(改用點擊展開)")
-                else:
-                    logger.error("    展開後仍找不到 Annual Report")
-        except Exception as e:
-            logger.error(f"    選取 Annual Report 失敗: {e}")
+            for e in self.driver.find_elements(By.XPATH, "//li | //a"):
+                if not e.is_displayed():
+                    continue
+                t = (e.text or "").strip()
+                if t and 2 < len(t) < 70 and t not in out:
+                    out.append(t)
+                if len(out) >= limit:
+                    break
+        except Exception:
+            pass
+        return out
+
+    def set_document_type_annual_report(self) -> bool:
+        """向下相容用的別名 —— 舊呼叫端仍可用這個名字。"""
+        return self.set_document_type(
+            ["Financial Statements/ESG Information", "Annual Report"])
 
     def click_search(self):
         btn = self._wait_clickable(SELECTORS.SEARCH_BUTTON)
         self._js_click(btn)
         time.sleep(3.5)   # 等 AJAX 結果渲染
 
-    def read_current_page(self) -> List[Filing]:
+    def read_current_page(self, doc_type: str = "annual_report") -> List[Filing]:
         from selenium.webdriver.common.by import By
         rows = self.driver.find_elements(By.CSS_SELECTOR, SELECTORS.RESULT_ROW)
         out = []
@@ -435,7 +597,7 @@ class HKEXBrowser:
                 company = row.find_element(By.CSS_SELECTOR, SELECTORS.RESULT_COMPANY_CELL).text.strip()
                 date = row.find_element(By.CSS_SELECTOR, SELECTORS.RESULT_DATE_CELL).text.strip()
                 title = link_el.text.strip() or "Annual Report"
-                out.append(Filing(stock, company, title, date, url))
+                out.append(Filing(stock, company, title, date, url, doc_type=doc_type))
             except Exception as e:
                 logger.debug(f"某一列解析失敗,略過: {e}")
         return out
@@ -456,18 +618,47 @@ class HKEXBrowser:
 
     def search_all_pages(self, stock_code: Optional[str],
                          from_date: str, to_date: str,
-                         max_pages: int = 50) -> List[Filing]:
+                         max_pages: int = 50,
+                         doc_type: str = "annual_report") -> List[Filing]:
         """
         跑完一次搜尋(單一時間窗)+ 自動翻頁,回傳這個窗內所有結果。
+
+        doc_type 是 config.DOC_TYPES 裡的 key(例如 "annual_report"、
+        "major_transaction"),用來查出選單路徑,並標記回傳的 Filing
+        方便下載時決定檔名。
 
         查到 0 筆時會整輪重試一次 —— 因為「0 筆」有兩種可能:
         真的沒有這份文件,或是表單某一步沒設定成功。兩者外觀一樣,
         但後者重跑一次通常就好了。多花 20 秒換取不漏掉資料是值得的。
         """
+        self.last_error = ""
+        import config as _C
+        spec = _C.DOC_TYPES.get(doc_type)
+        if spec is None:
+            raise ValueError(f"未知的文件類型「{doc_type}」,"
+                             f"可用選項: {list(_C.DOC_TYPES.keys())}")
+        path = spec["path"]
+
         for attempt in (1, 2):
             self.open_search_page()
             picked = self.set_stock_code(stock_code)
-            self.set_document_type_annual_report()
+
+            # 文件類型沒設定成功就必須中止這一輪。
+            # 若照樣往下搜尋,HKEXnews 會用「ALL」查詢:結果看起來完全正常,
+            # 筆數甚至更多,但拿到的是全類型公告,而且會被下游標記成
+            # 使用者指定的類型、用該類型的檔名存檔。這種「看起來成功的錯誤」
+            # 比直接報錯危險得多 —— 寧可回報 0 筆,不可回報錯的 100 筆。
+            if not self.set_document_type(path):
+                logger.error(f"  文件類型「{doc_type}」未能設定成功,中止本輪查詢")
+                logger.error("  (若繼續搜尋會拿到「全部類型」的結果並被誤標成此類型)")
+                if attempt == 2:
+                    self.last_error = (f"文件類型「{doc_type}」的選單未能設定成功,"
+                                       f"已中止查詢(避免拿到全類型結果)")
+                    return []
+                logger.warning("  重試一次...")
+                time.sleep(2.0)
+                continue
+
             # 日期要在選完股票代號之後設定 —— HKEXnews 選了股票後會自動
             # 把日期區間重設為該股票的可查範圍,先設日期會被覆蓋掉。
             self.set_date_range(from_date, to_date)
@@ -475,7 +666,7 @@ class HKEXBrowser:
 
             results: List[Filing] = []
             for page_no in range(1, max_pages + 1):
-                results.extend(self.read_current_page())
+                results.extend(self.read_current_page(doc_type=doc_type))
                 logger.info(f"  第 {page_no} 頁,累計 {len(results)} 筆")
                 if not self.has_next_page():
                     break
@@ -504,40 +695,64 @@ class BatchDownloader:
     """
 
     def __init__(self, out_dir: str = "downloads", headless: bool = True,
-                 polite_delay: float = 2.0):
+                 polite_delay: float = 2.0, reporter=None):
         self.out_dir = out_dir
         self.headless = headless
         self.polite_delay = polite_delay
+        # reporter 是 error_report.ErrorReport(可為 None)。下載階段的問題
+        # 是這一層自己就知道的事實(查無結果、連線失敗),直接明確回報,
+        # 不需要靠事後掃描輸出文字去猜。
+        self.reporter = reporter
         os.makedirs(out_dir, exist_ok=True)
 
+    def _report(self, what: str, filename=None, stock=None):
+        if self.reporter is not None:
+            try:
+                self.reporter.add(what, filename=filename, stock=stock)
+            except Exception as e:
+                logger.debug(f"錯誤紀錄寫入失敗(不影響下載): {e}")
+
     def run_for_companies(self, stock_codes: List[str],
-                          from_date: str, to_date: str) -> List[Filing]:
+                          from_date: str, to_date: str,
+                          doc_type: str = "annual_report") -> List[Filing]:
         """情境A:已知特定公司清單。每間公司各自查(可用366天大區間,較快)。"""
         all_filings: List[Filing] = []
         empty: List[str] = []
+        reasons: dict = {}      # 代號 → 0 筆的具體原因(空字串代表真的查無)
         with HKEXBrowser(headless=self.headless) as browser:
             for i, code in enumerate(stock_codes, 1):
                 logger.info(f"[{i}/{len(stock_codes)}] 查詢股票代號 {code}")
                 try:
-                    filings = browser.search_all_pages(code, from_date, to_date)
+                    filings = browser.search_all_pages(code, from_date, to_date,
+                                                        doc_type=doc_type)
                     all_filings.extend(filings)
                     logger.info(f"  {code}: 找到 {len(filings)} 筆")
                     if not filings:
                         empty.append(code)
+                        reasons[code] = browser.last_error
                 except Exception as e:
                     logger.error(f"  {code}: 查詢失敗 — {e}")
                     empty.append(code)
+                    self._report(f"查詢失敗:{str(e)[:80]}", stock=code)
                 time.sleep(self.polite_delay)
 
         # 查無結果的公司要明確列出來,不能靜靜地少掉 ——
         # 使用者需要知道哪幾間要人手確認
         if empty:
-            logger.warning(f"以下 {len(empty)} 間公司查無年報,請人手確認: "
+            logger.warning(f"以下 {len(empty)} 間公司查無「{doc_type}」,請人手確認: "
                            f"{', '.join(empty)}")
-            logger.warning("  可能原因:該區間內未刊發年報 / 代號有誤 / 網站暫時異常")
+            logger.warning("  可能原因:該區間內未刊發此類文件 / 代號有誤 / 網站暫時異常")
+            for code in empty:
+                detail = reasons.get(code)
+                self._report(
+                    detail if detail else
+                    (f"查無「{doc_type}」類型文件 "
+                     f"(可能原因:該區間內未刊發此類文件 / 代號有誤 / 網站暫時異常)"),
+                    stock=code)
         return all_filings
 
-    def run_for_whole_market(self, from_date: str, to_date: str) -> List[Filing]:
+    def run_for_whole_market(self, from_date: str, to_date: str,
+                             doc_type: str = "annual_report") -> List[Filing]:
         """
         情境B:整個市場、不限公司。
         因為不指定股票代號時查詢區間上限只有約30天,長區間要拆成多個窗。
@@ -555,11 +770,13 @@ class BatchDownloader:
             for i, (w_from, w_to) in enumerate(windows, 1):
                 logger.info(f"[{i}/{len(windows)}] 時間窗 {w_from} ~ {w_to}")
                 try:
-                    filings = browser.search_all_pages(None, w_from, w_to)
+                    filings = browser.search_all_pages(None, w_from, w_to,
+                                                        doc_type=doc_type)
                     all_filings.extend(filings)
                     logger.info(f"  找到 {len(filings)} 筆")
                 except Exception as e:
                     logger.error(f"  查詢失敗 — {e}")
+                    self._report(f"全市場查詢失敗(時間窗 {w_from}~{w_to}):{str(e)[:60]}")
                 time.sleep(self.polite_delay)
         return all_filings
 
@@ -588,5 +805,7 @@ class BatchDownloader:
                 paths.append(path)
             except Exception as e:
                 logger.error(f"  下載失敗: {e}")
+                self._report(f"下載失敗:{str(e)[:80]}",
+                             stock=f.clean_code())
             time.sleep(self.polite_delay)
         return paths

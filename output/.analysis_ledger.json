@@ -7,9 +7,9 @@
       "outputs": [
         "output\\00700_TENCENT_20250408_extract.xlsx"
       ],
-      "logic_version": "47cfa60e4bce7553",
+      "logic_version": "53ef7f03659550d9",
       "ai": false,
-      "analysed_at": "2026-08-31T11:42:30"
+      "analysed_at": "2026-08-31T17:37:40"
     },
     "effb379ca03c94a1": {
       "file": "08096_TASTY_CONCEPTS_20260731.pdf",
@@ -17,9 +17,1578 @@
       "outputs": [
         "output\\08096_TASTY_CONCEPTS_20260731_extract.xlsx"
       ],
-      "logic_version": "47cfa60e4bce7553",
+      "logic_version": "53ef7f03659550d9",
       "ai": false,
-      "analysed_at": "2026-08-31T11:42:37"
+      "analysed_at": "2026-08-31T17:39:04"
+    },
+    "50b5e7d62bf15109": {
+      "file": "00022_MEXAN-NEW_20260730.pdf",
+      "size": 2972721,
+      "outputs": [
+        "output\\00022_MEXAN-NEW_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:15"
+    },
+    "be4638ce78cb160c": {
+      "file": "00037_FE_HOTELS_20260730.pdf",
+      "size": 5430257,
+      "outputs": [
+        "output\\00037_FE_HOTELS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:16"
+    },
+    "f780a6be4bb376df": {
+      "file": "00040_GOLD_PEAK_20260730.pdf",
+      "size": 10097045,
+      "outputs": [
+        "output\\00040_GOLD_PEAK_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:17"
+    },
+    "b47d218232a32695": {
+      "file": "00052_FAIRWOOD_HOLD_20260730.pdf",
+      "size": 7418696,
+      "outputs": [
+        "output\\00052_FAIRWOOD_HOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:17"
+    },
+    "e2f30cec0ed82410": {
+      "file": "00060_HK_FOOD_INV_20260729.pdf",
+      "size": 4919052,
+      "outputs": [
+        "output\\00060_HK_FOOD_INV_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:18"
+    },
+    "5fdddf0a70d82a3c": {
+      "file": "00126_CARRIANNA_20260730.pdf",
+      "size": 7443437,
+      "outputs": [
+        "output\\00126_CARRIANNA_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:19"
+    },
+    "6f7aa360679c1df7": {
+      "file": "00160_HON_KWOK_LAND_20260729.pdf",
+      "size": 2157799,
+      "outputs": [
+        "output\\00160_HON_KWOK_LAND_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:19"
+    },
+    "e66b3d9de6491532": {
+      "file": "00164_CHINA_BAOLI_TEC_20260731.pdf",
+      "size": 2601949,
+      "outputs": [
+        "output\\00164_CHINA_BAOLI_TEC_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:20"
+    },
+    "d48f851e39bbe399": {
+      "file": "00211_STYLAND_HOLD_20260731.pdf",
+      "size": 5904755,
+      "outputs": [
+        "output\\00211_STYLAND_HOLD_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:20"
+    },
+    "9ccb97780da46e3c": {
+      "file": "00213_NATIONAL_ELEC_H_20260730.pdf",
+      "size": 12360252,
+      "outputs": [
+        "output\\00213_NATIONAL_ELEC_H_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:21"
+    },
+    "2d4b450392ef57f4": {
+      "file": "00216_CHINNEY_INV_20260729.pdf",
+      "size": 1932615,
+      "outputs": [
+        "output\\00216_CHINNEY_INV_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:21"
+    },
+    "743935b8abf8adcf": {
+      "file": "00224_PIONEER_GLOBAL_20260730.pdf",
+      "size": 2232521,
+      "outputs": [
+        "output\\00224_PIONEER_GLOBAL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:21"
+    },
+    "ab35658f6f79a68d": {
+      "file": "00252_SE_ASIA_PPT_20260729.pdf",
+      "size": 4188429,
+      "outputs": [
+        "output\\00252_SE_ASIA_PPT_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:22"
+    },
+    "00e1330e5ace638a": {
+      "file": "00259_YEEBO_20260730.pdf",
+      "size": 1756468,
+      "outputs": [
+        "output\\00259_YEEBO_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:22"
+    },
+    "56a15bc9280df969": {
+      "file": "00294_YANGTZEKIANG_20260731.pdf",
+      "size": 3076799,
+      "outputs": [
+        "output\\00294_YANGTZEKIANG_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:23"
+    },
+    "f7300f5d01e7fa67": {
+      "file": "00313_RICHLY_FIELD_20260731.pdf",
+      "size": 5643981,
+      "outputs": [
+        "output\\00313_RICHLY_FIELD_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:23"
+    },
+    "d89933a0ae9a2d23": {
+      "file": "00328_ALCO_HOLDINGS_20260731.pdf",
+      "size": 4241029,
+      "outputs": [
+        "output\\00328_ALCO_HOLDINGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:24"
+    },
+    "fce8aca387a865e7": {
+      "file": "00343_CULTURECOM_HOLD_20260730.pdf",
+      "size": 4894360,
+      "outputs": [
+        "output\\00343_CULTURECOM_HOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:25"
+    },
+    "5f23d7efaf84e73d": {
+      "file": "00353_ENERGY_INTINV_20260730.pdf",
+      "size": 7087380,
+      "outputs": [
+        "output\\00353_ENERGY_INTINV_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:26"
+    },
+    "da8f06539a7fda25": {
+      "file": "00374_FOUR_SEAS_MER_20260729.pdf",
+      "size": 10359107,
+      "outputs": [
+        "output\\00374_FOUR_SEAS_MER_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:27"
+    },
+    "fe1c7681e90ed604": {
+      "file": "00375_YGM_TRADING_20260731.pdf",
+      "size": 1761726,
+      "outputs": [
+        "output\\00375_YGM_TRADING_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:28"
+    },
+    "29729f13723b65b2": {
+      "file": "00391_MEI_AH_ENTER_20260730.pdf",
+      "size": 3068581,
+      "outputs": [
+        "output\\00391_MEI_AH_ENTER_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:29"
+    },
+    "6970db0d76d8aa1e": {
+      "file": "00401_WANJIA_GROUP_20260730.pdf",
+      "size": 10249403,
+      "outputs": [
+        "output\\00401_WANJIA_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:30"
+    },
+    "a1b7f8d1c71e119c": {
+      "file": "00417_TSE_SUI_LUEN_20260729.pdf",
+      "size": 21505114,
+      "outputs": [
+        "output\\00417_TSE_SUI_LUEN_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:31"
+    },
+    "a486f9dcab1fe63d": {
+      "file": "00485_CHINASINOSTAR_20260731.pdf",
+      "size": 10128468,
+      "outputs": [
+        "output\\00485_CHINASINOSTAR_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:32"
+    },
+    "7a68c54de0ce837a": {
+      "file": "00497_CSI_PROPERTIES_20260729.pdf",
+      "size": 6218796,
+      "outputs": [
+        "output\\00497_CSI_PROPERTIES_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:33"
+    },
+    "f38b66a1262d36d9": {
+      "file": "00498_BLUE_RIVER_HLDG_20260730.pdf",
+      "size": 2029900,
+      "outputs": [
+        "output\\00498_BLUE_RIVER_HLDG_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:34"
+    },
+    "87beb5fcfbb91c73": {
+      "file": "00508_DINGYI_GP_INV_20260729.pdf",
+      "size": 10179519,
+      "outputs": [
+        "output\\00508_DINGYI_GP_INV_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:35"
+    },
+    "cd030bec89b795e6": {
+      "file": "00526_LISI_GP_HOLD_20260730.pdf",
+      "size": 1769414,
+      "outputs": [
+        "output\\00526_LISI_GP_HOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:35"
+    },
+    "45a3fde410fc890b": {
+      "file": "00595_AV_CONCEPT_HOLD_20260730.pdf",
+      "size": 2814949,
+      "outputs": [
+        "output\\00595_AV_CONCEPT_HOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:36"
+    },
+    "8cc7e2ef7bcd3eb4": {
+      "file": "00650_PRODUCTIVE_TECH_20260729.pdf",
+      "size": 15275874,
+      "outputs": [
+        "output\\00650_PRODUCTIVE_TECH_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:38"
+    },
+    "c1d3d35047116491": {
+      "file": "00673_CHINA_HEALTH_20250725.pdf",
+      "size": 862839,
+      "outputs": [
+        "output\\00673_CHINA_HEALTH_20250725_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:39"
+    },
+    "e844398b8aa9aca3": {
+      "file": "00673_CHINA_HEALTH_20260731.pdf",
+      "size": 621861,
+      "outputs": [
+        "output\\00673_CHINA_HEALTH_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:39"
+    },
+    "f5bc3ab7891be5f0": {
+      "file": "00711_ASIA_ALLIED_INF_20260729.pdf",
+      "size": 18758200,
+      "outputs": [
+        "output\\00711_ASIA_ALLIED_INF_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:42"
+    },
+    "9e60eccdf52469c8": {
+      "file": "00731_C_D_NEWIN_20250424.pdf",
+      "size": 13097697,
+      "outputs": [
+        "output\\00731_C_D_NEWIN_20250424_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:43"
+    },
+    "48679581270fc476": {
+      "file": "00736_CHINA_PPT_INV_20260731.pdf",
+      "size": 1508947,
+      "outputs": [
+        "output\\00736_CHINA_PPT_INV_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:43"
+    },
+    "6d1f10c156735f09": {
+      "file": "00745_CN_CULTURE_GP_20260731.pdf",
+      "size": 1896469,
+      "outputs": [
+        "output\\00745_CN_CULTURE_GP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:44"
+    },
+    "e5c51a443b5f3c81": {
+      "file": "00776_IMPERIUM_TEC_GP_20260730.pdf",
+      "size": 4477341,
+      "outputs": [
+        "output\\00776_IMPERIUM_TEC_GP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:45"
+    },
+    "1b404c7c9eaddf77": {
+      "file": "00789_ARTINI_HLDG_20260730.pdf",
+      "size": 7186798,
+      "outputs": [
+        "output\\00789_ARTINI_HLDG_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:46"
+    },
+    "a63f9515b6f780e8": {
+      "file": "00841_CASSAVA_RES_20260731.pdf",
+      "size": 4547042,
+      "outputs": [
+        "output\\00841_CASSAVA_RES_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:46"
+    },
+    "d06e254f9348f770": {
+      "file": "00852_STRONG_PETRO_20260731.pdf",
+      "size": 10629511,
+      "outputs": [
+        "output\\00852_STRONG_PETRO_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:47"
+    },
+    "24fac0f342eb8c05": {
+      "file": "00855_CHINA_WATER_20260730.pdf",
+      "size": 2771877,
+      "outputs": [
+        "output\\00855_CHINA_WATER_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:48"
+    },
+    "0239cfa7bba79e36": {
+      "file": "00858_EXTRAWELL_PHAR_20260730.pdf",
+      "size": 6605406,
+      "outputs": [
+        "output\\00858_EXTRAWELL_PHAR_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:50"
+    },
+    "36c035c63b59e82f": {
+      "file": "00907_ELEGANCEOPTICAL_20260731.pdf",
+      "size": 3148491,
+      "outputs": [
+        "output\\00907_ELEGANCEOPTICAL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:51"
+    },
+    "b0b3de7f916946cd": {
+      "file": "00948_ALPHA_PRO_HLDGS_20260729.pdf",
+      "size": 3701172,
+      "outputs": [
+        "output\\00948_ALPHA_PRO_HLDGS_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:52"
+    },
+    "03046d7ea5c0628e": {
+      "file": "00970_NEW_SPARKLEROLL_20260731.pdf",
+      "size": 5071210,
+      "outputs": [
+        "output\\00970_NEW_SPARKLEROLL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:54"
+    },
+    "16a187a88e4eecaf": {
+      "file": "00986_DUFU_LIQUOR_GP_20260731.pdf",
+      "size": 2383193,
+      "outputs": [
+        "output\\00986_DUFU_LIQUOR_GP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:54"
+    },
+    "b2e7884482337837": {
+      "file": "00989_CHINA_CBS_INTL_20260729.pdf",
+      "size": 6944372,
+      "outputs": [
+        "output\\00989_CHINA_CBS_INTL_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:55"
+    },
+    "97b9931d9cb108ec": {
+      "file": "00997_CHINLINK_INTL_20260730.pdf",
+      "size": 8687746,
+      "outputs": [
+        "output\\00997_CHINLINK_INTL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:57"
+    },
+    "da98fa4f32430204": {
+      "file": "01013_WAI_CHUN_GROUP_20260730.pdf",
+      "size": 1835607,
+      "outputs": [
+        "output\\01013_WAI_CHUN_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:58"
+    },
+    "55c03e3839922341": {
+      "file": "01025_KNT_HOLDINGS_20260730.pdf",
+      "size": 1998789,
+      "outputs": [
+        "output\\01025_KNT_HOLDINGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:59"
+    },
+    "780d46e4e79d8961": {
+      "file": "01124_COASTAL_GL_20260731.pdf",
+      "size": 2692364,
+      "outputs": [
+        "output\\01124_COASTAL_GL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:59"
+    },
+    "cd0b02bc94139702": {
+      "file": "01172_MAGNUSCONCORDIA_20260731.pdf",
+      "size": 7682682,
+      "outputs": [
+        "output\\01172_MAGNUSCONCORDIA_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:01"
+    },
+    "8f6be29174d7b950": {
+      "file": "01173_VEEKO_INT_L_20260729.pdf",
+      "size": 8672187,
+      "outputs": [
+        "output\\01173_VEEKO_INT_L_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:03"
+    },
+    "d98ca431f6be8ea8": {
+      "file": "01182_SUCCESS_DRAGON_20260730.pdf",
+      "size": 4920278,
+      "outputs": [
+        "output\\01182_SUCCESS_DRAGON_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:04"
+    },
+    "1d7834883cc947f0": {
+      "file": "01226_CH_INV_FIN_GP_20260729.pdf",
+      "size": 4083995,
+      "outputs": [
+        "output\\01226_CH_INV_FIN_GP_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:05"
+    },
+    "aff747dfd8ccd99b": {
+      "file": "01260_WONDERFUL_SKY_20260730.pdf",
+      "size": 1720484,
+      "outputs": [
+        "output\\01260_WONDERFUL_SKY_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:05"
+    },
+    "1dc8f61364c1f347": {
+      "file": "01315_GREEN_ECONOMY_20260730.pdf",
+      "size": 6386706,
+      "outputs": [
+        "output\\01315_GREEN_ECONOMY_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:06"
+    },
+    "169c9afd7a4fd1ca": {
+      "file": "01323_HUASHENG_INTL_20260730.pdf",
+      "size": 1413420,
+      "outputs": [
+        "output\\01323_HUASHENG_INTL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:07"
+    },
+    "5a0d24ad53ae6a22": {
+      "file": "01348_QUALI-SMART_20260730.pdf",
+      "size": 3409716,
+      "outputs": [
+        "output\\01348_QUALI-SMART_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:07"
+    },
+    "4e274428d7863108": {
+      "file": "01413_FEG_HOLDINGS_20260731.pdf",
+      "size": 3616987,
+      "outputs": [
+        "output\\01413_FEG_HOLDINGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:09"
+    },
+    "2d292c6b934fa4ca": {
+      "file": "01466_BAIJIN_LIFE_SCI_20260730.pdf",
+      "size": 6457268,
+      "outputs": [
+        "output\\01466_BAIJIN_LIFE_SCI_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:10"
+    },
+    "e76ab342f6e8e0ef": {
+      "file": "01468_JAKOTA_CAP-NEW_20260729.pdf",
+      "size": 6864390,
+      "outputs": [
+        "output\\01468_JAKOTA_CAP-NEW_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:11"
+    },
+    "dbfb5692af304298": {
+      "file": "01472_SANG_HING_HLDGS_20260730.pdf",
+      "size": 1967358,
+      "outputs": [
+        "output\\01472_SANG_HING_HLDGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:11"
+    },
+    "26b87e2fc2e4b658": {
+      "file": "01489_GC_CONSTRUCTION_20260729.pdf",
+      "size": 3353322,
+      "outputs": [
+        "output\\01489_GC_CONSTRUCTION_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:12"
+    },
+    "0fadf3f932f6b9ab": {
+      "file": "01499_OKG_TECH_20260730.pdf",
+      "size": 6226882,
+      "outputs": [
+        "output\\01499_OKG_TECH_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:14"
+    },
+    "272786bb1f18b4f2": {
+      "file": "01536_YUK_WING_GP_20260730.pdf",
+      "size": 2661808,
+      "outputs": [
+        "output\\01536_YUK_WING_GP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:15"
+    },
+    "70f0a41d71c001c0": {
+      "file": "01539_UNITY_GP_HLDGS_20260730.pdf",
+      "size": 2248944,
+      "outputs": [
+        "output\\01539_UNITY_GP_HLDGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:15"
+    },
+    "7760ad9734ac9e90": {
+      "file": "01546_THELLOY_DEV_20260730.pdf",
+      "size": 2453513,
+      "outputs": [
+        "output\\01546_THELLOY_DEV_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:16"
+    },
+    "c9f89470ce473a40": {
+      "file": "01559_KWAN_ON_HLDGS_20260729.pdf",
+      "size": 2171050,
+      "outputs": [
+        "output\\01559_KWAN_ON_HLDGS_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:17"
+    },
+    "0de99b66a10c6f74": {
+      "file": "01563_ALLI_INTL_ED_LE_20260730.pdf",
+      "size": 818767,
+      "outputs": [
+        "output\\01563_ALLI_INTL_ED_LE_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:17"
+    },
+    "b487534ee1339cf9": {
+      "file": "01566_CA_CULTURAL_20260731.pdf",
+      "size": 2906413,
+      "outputs": [
+        "output\\01566_CA_CULTURAL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:18"
+    },
+    "cbc7297e2f5037d4": {
+      "file": "01580_DA_SEN_HLDGS_20260731.pdf",
+      "size": 6910656,
+      "outputs": [
+        "output\\01580_DA_SEN_HLDGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:18"
+    },
+    "6b9ef53199d6a1be": {
+      "file": "01591_SHUN_WO_GROUP_20260731.pdf",
+      "size": 2974456,
+      "outputs": [
+        "output\\01591_SHUN_WO_GROUP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:19"
+    },
+    "123ce628fd46e7f3": {
+      "file": "01613_SYNERTONE_20260730.pdf",
+      "size": 3585178,
+      "outputs": [
+        "output\\01613_SYNERTONE_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:20"
+    },
+    "14467dd6787368b1": {
+      "file": "01633_SHEUNG_YUE_GP_20260731.pdf",
+      "size": 3301106,
+      "outputs": [
+        "output\\01633_SHEUNG_YUE_GP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:20"
+    },
+    "38eb220422bd17ca": {
+      "file": "01647_GRANDSHORES_20260730.pdf",
+      "size": 3435273,
+      "outputs": [
+        "output\\01647_GRANDSHORES_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:21"
+    },
+    "912130b4725a4dd1": {
+      "file": "01653_MOS_HOUSE_20260731.pdf",
+      "size": 2318450,
+      "outputs": [
+        "output\\01653_MOS_HOUSE_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:22"
+    },
+    "f603c94d02deee88": {
+      "file": "01657_SG_GROUP_HLDGS_20260729.pdf",
+      "size": 1933039,
+      "outputs": [
+        "output\\01657_SG_GROUP_HLDGS_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:22"
+    },
+    "7c9f3f62ad615708": {
+      "file": "01660_SEVEN_ELEMENTS_20260731.pdf",
+      "size": 2538784,
+      "outputs": [
+        "output\\01660_SEVEN_ELEMENTS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:23"
+    },
+    "677a0a60b49a1314": {
+      "file": "01663_S_HARBOURHOLD_20260730.pdf",
+      "size": 6001023,
+      "outputs": [
+        "output\\01663_S_HARBOURHOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:24"
+    },
+    "9de93c867662ea83": {
+      "file": "01667_DIMMI_LIFE_HLDG_20260731.pdf",
+      "size": 9708978,
+      "outputs": [
+        "output\\01667_DIMMI_LIFE_HLDG_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:25"
+    },
+    "e8b7c45666f8e30c": {
+      "file": "01703_EASYHOLD_GROUP_20260730.pdf",
+      "size": 3761274,
+      "outputs": [
+        "output\\01703_EASYHOLD_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:26"
+    },
+    "673fff82db540075": {
+      "file": "01705_B_S_INTL_HLDG_20260730.pdf",
+      "size": 20009242,
+      "outputs": [
+        "output\\01705_B_S_INTL_HLDG_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:27"
+    },
+    "84e3d39dc12f5675": {
+      "file": "01709_DL_HOLDINGS_GP_20260730.pdf",
+      "size": 2667054,
+      "outputs": [
+        "output\\01709_DL_HOLDINGS_GP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:28"
+    },
+    "5955177c32a28a14": {
+      "file": "01757_GLOBAL_CHI_BC_20260731.pdf",
+      "size": 7944071,
+      "outputs": [
+        "output\\01757_GLOBAL_CHI_BC_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:29"
+    },
+    "a222a46e64802e25": {
+      "file": "01841_A_PLUS_GROUP_20260730.pdf",
+      "size": 1567699,
+      "outputs": [
+        "output\\01841_A_PLUS_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:29"
+    },
+    "8ccd59f1dfe8e7dd": {
+      "file": "01843_SNACK_EMPIRE_20260730.pdf",
+      "size": 2974390,
+      "outputs": [
+        "output\\01843_SNACK_EMPIRE_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:30"
+    },
+    "f083eb54355f9a82": {
+      "file": "01865_PENGO_HLDG_GP_20260730.pdf",
+      "size": 3361694,
+      "outputs": [
+        "output\\01865_PENGO_HLDG_GP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:31"
+    },
+    "523a94564a97650d": {
+      "file": "01939_SHANGSHAN_GOLD_20260730.pdf",
+      "size": 13821770,
+      "outputs": [
+        "output\\01939_SHANGSHAN_GOLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:33"
+    },
+    "2644391708fee4a4": {
+      "file": "01943_KING_S_STONE_20260731.pdf",
+      "size": 1101178,
+      "outputs": [
+        "output\\01943_KING_S_STONE_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:33"
+    },
+    "93986bb6a6916831": {
+      "file": "01955_JOHNSON_HLDGS_20260729.pdf",
+      "size": 5628235,
+      "outputs": [
+        "output\\01955_JOHNSON_HLDGS_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:34"
+    },
+    "5fbf7900b97e5300": {
+      "file": "02031_AUSUPREME_20260730.pdf",
+      "size": 9933899,
+      "outputs": [
+        "output\\02031_AUSUPREME_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:35"
+    },
+    "e13727a6c606ea7e": {
+      "file": "02080_AUX_INTL_20260729.pdf",
+      "size": 7343818,
+      "outputs": [
+        "output\\02080_AUX_INTL_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:36"
+    },
+    "62ed9c9a28f76a2d": {
+      "file": "02138_EC_HEALTHCARE_20260730.pdf",
+      "size": 7503728,
+      "outputs": [
+        "output\\02138_EC_HEALTHCARE_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:37"
+    },
+    "a7fde2bd3e20cbfe": {
+      "file": "02189_KATO_20260730.pdf",
+      "size": 9274266,
+      "outputs": [
+        "output\\02189_KATO_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:38"
+    },
+    "b22c8a311bebe66c": {
+      "file": "02193_MAN_KING_HOLD_20260731.pdf",
+      "size": 7578554,
+      "outputs": [
+        "output\\02193_MAN_KING_HOLD_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:39"
+    },
+    "ed997e9f09c6aae2": {
+      "file": "02221_NEW_CONCEPTS_20260730.pdf",
+      "size": 5341207,
+      "outputs": [
+        "output\\02221_NEW_CONCEPTS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:40"
+    },
+    "8101321172b9d5c0": {
+      "file": "02230_MEDIALINK_GROUP_20260730.pdf",
+      "size": 6864992,
+      "outputs": [
+        "output\\02230_MEDIALINK_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:42"
+    },
+    "0c37d20f2db32c63": {
+      "file": "02288_RYKADAN_CAPITAL_20260730.pdf",
+      "size": 2193055,
+      "outputs": [
+        "output\\02288_RYKADAN_CAPITAL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:42"
+    },
+    "09e6c275e065b079": {
+      "file": "02290_LUNG_FUNG_GROUP_20260730.pdf",
+      "size": 8552445,
+      "outputs": [
+        "output\\02290_LUNG_FUNG_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:44"
+    },
+    "7b240ccf3640b4a2": {
+      "file": "02322_MODERN_INNO_DT_20260731.pdf",
+      "size": 7568567,
+      "outputs": [
+        "output\\02322_MODERN_INNO_DT_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:45"
+    },
+    "7151028949d0605d": {
+      "file": "02350_MTT_GROUP_20260729.pdf",
+      "size": 2843834,
+      "outputs": [
+        "output\\02350_MTT_GROUP_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:46"
+    },
+    "e8003526a9418378": {
+      "file": "03415_A_GXS_P500CC_20260731.pdf",
+      "size": 5530946,
+      "outputs": [
+        "output\\03415_A_GXS_P500CC_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:53"
+    },
+    "be3221b8ba24594e": {
+      "file": "02812_SAMSUNGCDGN_20260731.pdf",
+      "size": 1085570,
+      "outputs": [
+        "output\\02812_SAMSUNGCDGN_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:48"
+    },
+    "fb89c7c72b2a929a": {
+      "file": "02814_SAMSUNG_FANG_20260731.pdf",
+      "size": 1700819,
+      "outputs": [
+        "output\\02814_SAMSUNG_FANG_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:48"
+    },
+    "1546536401159ce4": {
+      "file": "02818_PANDO_BITCOIN_20260731.pdf",
+      "size": 8745084,
+      "outputs": [
+        "output\\02818_PANDO_BITCOIN_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:48"
+    },
+    "842be012cb0b730e": {
+      "file": "02820_GX_CN_BIOTECH_20260731.pdf",
+      "size": 3815066,
+      "outputs": [
+        "output\\02820_GX_CN_BIOTECH_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:49"
+    },
+    "784a9297809513ab": {
+      "file": "03041_GX_CN_PB_BOND_20260731.pdf",
+      "size": 2485874,
+      "outputs": [
+        "output\\03041_GX_CN_PB_BOND_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:50"
+    },
+    "079d5279f0e8f548": {
+      "file": "03056_A_PANDO_INNO_20260731.pdf",
+      "size": 11711272,
+      "outputs": [
+        "output\\03056_A_PANDO_INNO_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:50"
+    },
+    "b8f20ec11865d23a": {
+      "file": "03081_VALUEGOLD_ETF_20260731.pdf",
+      "size": 596612,
+      "outputs": [
+        "output\\03081_VALUEGOLD_ETF_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:50"
+    },
+    "5d1647161fea0e29": {
+      "file": "03135_FA_SAMSUNG_BTC_20260731.pdf",
+      "size": 1042797,
+      "outputs": [
+        "output\\03135_FA_SAMSUNG_BTC_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:50"
+    },
+    "4b7821e4f769b619": {
+      "file": "03321_ZHONGKE_GROUP_20260730.pdf",
+      "size": 1650704,
+      "outputs": [
+        "output\\03321_ZHONGKE_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:51"
+    },
+    "e7032465f4b172e3": {
+      "file": "03638_HUNLICAR_GROUP_20260730.pdf",
+      "size": 6166984,
+      "outputs": [
+        "output\\03638_HUNLICAR_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:54"
+    },
+    "9c5f1aeebce3de2d": {
+      "file": "03789_ROYAL_DELUXE_20260729.pdf",
+      "size": 1705558,
+      "outputs": [
+        "output\\03789_ROYAL_DELUXE_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:55"
+    },
+    "a00bb6c78a73c18d": {
+      "file": "03878_VICON_HOLDINGS_20260730.pdf",
+      "size": 2036384,
+      "outputs": [
+        "output\\03878_VICON_HOLDINGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:55"
+    },
+    "091fd0392f87a4f1": {
+      "file": "06883_ETERNAL_BEAUTY_20260730.pdf",
+      "size": 20516098,
+      "outputs": [
+        "output\\06883_ETERNAL_BEAUTY_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:57"
+    },
+    "e40189c4adba55e9": {
+      "file": "06893_HINSANG_GROUP_20260729.pdf",
+      "size": 11632437,
+      "outputs": [
+        "output\\06893_HINSANG_GROUP_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:58"
+    },
+    "09e591a3d365b5cf": {
+      "file": "08003_GREAT_WORLD_20260730.pdf",
+      "size": 6284752,
+      "outputs": [
+        "output\\08003_GREAT_WORLD_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:59"
+    },
+    "a918a00236fd7d6b": {
+      "file": "08021_WLS_HOLDINGS_20260828.pdf",
+      "size": 7471287,
+      "outputs": [
+        "output\\08021_WLS_HOLDINGS_20260828_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:38:59"
+    },
+    "ba88a6e963fd71dc": {
+      "file": "08028_TIMELESS_20260730.pdf",
+      "size": 4127763,
+      "outputs": [
+        "output\\08028_TIMELESS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:00"
+    },
+    "68c59756e1a0cdef": {
+      "file": "08029_CI_FIN_TECH_GP_20260731.pdf",
+      "size": 1049663,
+      "outputs": [
+        "output\\08029_CI_FIN_TECH_GP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:01"
+    },
+    "8edde98018fd9841": {
+      "file": "08031_ETS_GROUP_20260428.pdf",
+      "size": 4716769,
+      "outputs": [
+        "output\\08031_ETS_GROUP_20260428_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:01"
+    },
+    "eae566d7f79d9a51": {
+      "file": "08040_COOLPOINT_INNO_20260731.pdf",
+      "size": 7695127,
+      "outputs": [
+        "output\\08040_COOLPOINT_INNO_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:02"
+    },
+    "37389a38d054e72c": {
+      "file": "08056_LIFE_CONCEPTS_20260731.pdf",
+      "size": 2188507,
+      "outputs": [
+        "output\\08056_LIFE_CONCEPTS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:02"
+    },
+    "39693e4c35589813": {
+      "file": "08069_FLYDOO_TECH_20260730.pdf",
+      "size": 3707000,
+      "outputs": [
+        "output\\08069_FLYDOO_TECH_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:03"
+    },
+    "3042ec4f5ec384dc": {
+      "file": "08091_OOH_HOLDINGS_20260731.pdf",
+      "size": 3126260,
+      "outputs": [
+        "output\\08091_OOH_HOLDINGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:03"
+    },
+    "da097f48ff6087f3": {
+      "file": "08103_HMVOD_20260729.pdf",
+      "size": 4508317,
+      "outputs": [
+        "output\\08103_HMVOD_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:05"
+    },
+    "def10a4b20afbcf4": {
+      "file": "08125_CHINA_NEW_HLDGS_20260731.pdf",
+      "size": 4659202,
+      "outputs": [
+        "output\\08125_CHINA_NEW_HLDGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:06"
+    },
+    "65ad6f08805f979d": {
+      "file": "08132_CENTURY_EN_INTL_20260730.pdf",
+      "size": 2257233,
+      "outputs": [
+        "output\\08132_CENTURY_EN_INTL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:07"
+    },
+    "e7ae8af6c71d37ff": {
+      "file": "08159_CU_VENTURE_INV_20260731.pdf",
+      "size": 2220944,
+      "outputs": [
+        "output\\08159_CU_VENTURE_INV_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:07"
+    },
+    "a2bdb9257449faf8": {
+      "file": "08161_MEDINET_GROUP_20260730.pdf",
+      "size": 9273388,
+      "outputs": [
+        "output\\08161_MEDINET_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:08"
+    },
+    "5c7fb840135cec81": {
+      "file": "08213_STARGLORY_HLDGS_20260730.pdf",
+      "size": 2213946,
+      "outputs": [
+        "output\\08213_STARGLORY_HLDGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:09"
+    },
+    "87b6e39f92380e4a": {
+      "file": "08217_JU_FU_TANG_BIOT_20260731.pdf",
+      "size": 3421097,
+      "outputs": [
+        "output\\08217_JU_FU_TANG_BIOT_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:09"
+    },
+    "b7d95d874f7cd51d": {
+      "file": "08220_BINGO_GROUP_20260729.pdf",
+      "size": 4616482,
+      "outputs": [
+        "output\\08220_BINGO_GROUP_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:10"
+    },
+    "80001ce1f2de65de": {
+      "file": "08232_THAC_GROUP_20260730.pdf",
+      "size": 2488480,
+      "outputs": [
+        "output\\08232_THAC_GROUP_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:10"
+    },
+    "41a7f1805f242b99": {
+      "file": "08269_GO_UP_EDU_TECH_20260730.pdf",
+      "size": 1199914,
+      "outputs": [
+        "output\\08269_GO_UP_EDU_TECH_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:10"
+    },
+    "1a2adcea78be27aa": {
+      "file": "08300_JIN_MI_FANG_GP_20260731.pdf",
+      "size": 4086857,
+      "outputs": [
+        "output\\08300_JIN_MI_FANG_GP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:12"
+    },
+    "b9316007a0ddea43": {
+      "file": "08315_CEN_PLAZA_HOTEL_20260731.pdf",
+      "size": 7009615,
+      "outputs": [
+        "output\\08315_CEN_PLAZA_HOTEL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:12"
+    },
+    "6484329cd19bb3da": {
+      "file": "08331_P_B_GROUP_20260729.pdf",
+      "size": 1819641,
+      "outputs": [
+        "output\\08331_P_B_GROUP_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:13"
+    },
+    "4fa1c19aefe2eb6c": {
+      "file": "08367_SIMPLICITY_HLDG_20260730.pdf",
+      "size": 1709215,
+      "outputs": [
+        "output\\08367_SIMPLICITY_HLDG_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:13"
+    },
+    "4ab2d2045c8e8ce3": {
+      "file": "08379_PRIME_INTEL_20260731.pdf",
+      "size": 4966110,
+      "outputs": [
+        "output\\08379_PRIME_INTEL_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:14"
+    },
+    "88b2b7d0d691d138": {
+      "file": "08428_CBK_HOLDINGS_20260730.pdf",
+      "size": 1438637,
+      "outputs": [
+        "output\\08428_CBK_HOLDINGS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:14"
+    },
+    "208ce2d3f83f150f": {
+      "file": "08431_HAO_BAI_INTL_20260730.pdf",
+      "size": 3720975,
+      "outputs": [
+        "output\\08431_HAO_BAI_INTL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:15"
+    },
+    "5d0b39f81c3cfb87": {
+      "file": "08432_BAR_PACIFIC_20260730.pdf",
+      "size": 3129889,
+      "outputs": [
+        "output\\08432_BAR_PACIFIC_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:15"
+    },
+    "c6b4bf8ebc059452": {
+      "file": "08448_UNI_PRINTSHOP_20260731.pdf",
+      "size": 1797121,
+      "outputs": [
+        "output\\08448_UNI_PRINTSHOP_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:15"
+    },
+    "e3ad2ef0f94f7449": {
+      "file": "08456_MANSION_INTL_20260730.pdf",
+      "size": 2962125,
+      "outputs": [
+        "output\\08456_MANSION_INTL_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:16"
+    },
+    "06b645005d79471c": {
+      "file": "08482_WAN_LEADER_20260730.pdf",
+      "size": 3361669,
+      "outputs": [
+        "output\\08482_WAN_LEADER_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:16"
+    },
+    "51425e7eec92882e": {
+      "file": "08532_POLYFAIR_HLDGS_20260731.pdf",
+      "size": 3257489,
+      "outputs": [
+        "output\\08532_POLYFAIR_HLDGS_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:17"
+    },
+    "8f317f34354e81b1": {
+      "file": "08549_GOLDEN_LEAF_INT_20260731.pdf",
+      "size": 9500338,
+      "outputs": [
+        "output\\08549_GOLDEN_LEAF_INT_20260731_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:18"
+    },
+    "297fd4155cb051d5": {
+      "file": "08613_ORIENTAL_PAY_20260729.pdf",
+      "size": 1353026,
+      "outputs": [
+        "output\\08613_ORIENTAL_PAY_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:18"
+    },
+    "67e0c664e95a1ab0": {
+      "file": "08619_NIU_HOLDINGS_20260729.pdf",
+      "size": 2807425,
+      "outputs": [
+        "output\\08619_NIU_HOLDINGS_20260729_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:18"
+    },
+    "baf60960eb11e9d8": {
+      "file": "08620_AE_LOGISTICS_20260730.pdf",
+      "size": 1760845,
+      "outputs": [
+        "output\\08620_AE_LOGISTICS_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:19"
+    },
+    "defff44af22f64ef": {
+      "file": "09900_ZCLOUD_TECH_CON_20260730.pdf",
+      "size": 4313429,
+      "outputs": [
+        "output\\09900_ZCLOUD_TECH_CON_20260730_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:39:19"
+    },
+    "8c9847db47bad330": {
+      "file": "01007_LONGHUI_INTL_MT_20260825.pdf",
+      "size": 1074019,
+      "outputs": [
+        "output\\01007_LONGHUI_INTL_MT_20260825_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:57"
+    },
+    "83d8e3d20a745f33": {
+      "file": "00700_TENCENT_MT_20251231.pdf",
+      "size": 93800,
+      "outputs": [
+        "output\\00700_TENCENT_MT_20251231_extract.xlsx"
+      ],
+      "logic_version": "53ef7f03659550d9",
+      "ai": false,
+      "analysed_at": "2026-08-31T17:37:40"
     }
+  },
+  "logic_snapshot": {
+    "ai_layer.py": "3ec5a84fb1d3",
+    "config.py": "9c54ecb7732d",
+    "excel_out.py": "c068b4832559",
+    "financials.py": "9b287b110778",
+    "pdf_reader.py": "cf626268be78",
+    "run.py": "23a06516b341",
+    "scanner.py": "a818788b4bdd"
   }
 }
