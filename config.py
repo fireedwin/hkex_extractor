@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 config.py — 領域知識層 (Domain knowledge layer)
@@ -174,17 +175,24 @@ _RAW_FIN_STATEMENTS = {
         ],
         "line_items": {
             "Revenue": ["revenue from contracts with customers", "total revenues", "revenues",
-                        "revenue", "turnover", "收入", "營業額"],
-            "Cost of Sales": ["cost of revenues", "cost of sales", "cost of revenue", "銷售成本"],
+                        "revenue", "turnover", "sales", "收入", "營業額"],
+            # Cost of inventories 是餐飲/零售業常見寫法(TASTY CONCEPTS 實例)
+            "Cost of Sales": ["cost of inventories sold", "cost of inventories",
+                              "cost of goods sold", "cost of revenues", "cost of sales",
+                              "cost of revenue", "cost of services", "direct costs",
+                              "銷售成本"],
             # 虧損年度會寫「Gross loss」而不是「Gross profit」。
             # 估值案件常常正是虧損公司,漏掉這個影響很大。
             "Gross Profit": ["gross profit/(loss)", "gross (loss)/profit",
                              "gross profit", "gross loss", "毛利", "毛損"],
             "Operating Profit": ["operating profit", "profit from operations", "經營溢利"],
-            "Finance Costs": ["finance costs", "finance cost", "融資成本"],
+            "Finance Costs": ["finance costs, net", "finance costs", "finance cost",
+                              "finance expenses", "融資成本"],
             "Profit Before Tax": ["profit before income tax", "profit before tax",
                                   "profit before taxation", "除稅前溢利"],
-            "Income Tax": ["income tax expense", "income tax", "所得稅開支"],
+            # 虧損公司會出現 credit(退稅),C&D 年報實例
+            "Income Tax": ["income tax expense", "income tax credit", "income tax",
+                           "taxation", "所得稅開支", "稅項"],
             "Profit for the Year": ["profit for the year", "profit for the period", "年內溢利"],
             "R&D Expenses": ["research and development expenses", "research and development costs", "研發開支"],
             "Depreciation": ["depreciation", "折舊"],
@@ -201,18 +209,31 @@ _RAW_FIN_STATEMENTS = {
         "line_items": {
             "Total Assets": ["total assets", "資產總值", "總資產"],
             "Total Current Assets": ["total current assets", "流動資產總值"],
-            "Cash and Equivalents": ["cash and cash equivalents", "現金及現金等價物"],
-            "Inventories": ["inventories", "存貨"],
-            "Trade Receivables": ["accounts receivable", "trade and other receivables",
-                                  "trade receivables", "應收賬款"],
+            # 港股小型股偏好 bank balances and cash(TASTY CONCEPTS 實例)
+            "Cash and Equivalents": ["cash and cash equivalents", "bank balances and cash",
+                                     "cash and bank balances", "cash at bank and on hand",
+                                     "現金及現金等價物", "銀行結餘及現金"],
+            "Inventories": ["inventories", "stocks", "存貨"],
+            "Trade Receivables": ["trade and bills receivable", "accounts receivable",
+                                  "trade and other receivables", "trade receivables",
+                                  "debtors", "應收賬款", "應收貿易款項"],
             "Goodwill": ["goodwill", "商譽"],
             "Intangible Assets": ["intangible assets", "無形資產"],
             "Investment Properties": ["investment properties", "投資物業"],
-            "Property Plant and Equipment": ["property, plant and equipment", "物業、廠房及設備"],
+            # Property and equipment 是不含廠房的服務業寫法;fixed assets 是舊制用語
+            "Property Plant and Equipment": ["property, plant and equipment",
+                                             "property and equipment", "fixed assets",
+                                             "物業、廠房及設備", "物業及設備"],
             "Total Liabilities": ["total liabilities", "負債總值", "總負債"],
             "Total Current Liabilities": ["total current liabilities", "流動負債總值"],
-            "Borrowings": ["bank borrowings", "borrowings", "銀行借款"],
-            "Total Equity": ["total equity", "權益總額", "總權益"],
+            "Borrowings": ["bank and other borrowings", "interest-bearing borrowings",
+                           "loans and borrowings", "bank borrowings", "bank loans",
+                           "other borrowing", "borrowings", "銀行借款", "借款"],
+            # 會計恆等式上 Net assets 必然等於 Total equity。
+            # TASTY CONCEPTS 兩者都印(6,272),但有些公司只印其中一個。
+            "Total Equity": ["total capital and reserves", "shareholders' equity",
+                             "shareholders' funds", "total equity", "net assets",
+                             "權益總額", "總權益", "資產淨值"],
         },
         # 有些公司(如騰訊)不印「Total current assets」,小計是裸數字行。
         # 這裡定義區段標題與停止點,讓工具能從區段結構推出小計。
@@ -247,11 +268,13 @@ _RAW_FIN_STATEMENTS = {
             # 騰訊寫「Net cash flows generated from...」比「Cash generated
             # from operations」精確,兩者差 460 億且概念不同(後者未扣利息稅項)。
             "Operating Cash Flow": ["net cash flows generated from operating activities",
+                                    "net cash flows used in operating activities",
                                     "net cash flows from operating activities",
                                     "net cash generated from operating activities",
+                                    "net cash used in operating activities",
                                     "net cash from operating activities",
                                     "cash generated from operations",
-                                    "經營活動所得現金淨額"],
+                                    "經營活動所得現金淨額", "經營活動所用現金淨額"],
             "Investing Cash Flow": ["net cash used in investing activities",
                                     "net cash flows used in investing activities",
                                     "net cash generated from investing activities",
@@ -260,10 +283,15 @@ _RAW_FIN_STATEMENTS = {
                                     "net cash flows used in financing activities",
                                     "net cash from financing activities",
                                     "融資活動所得現金淨額"],
+            # 現金流量表幾乎不寫 CAPEX,而是冗長的動詞句型。
+            # TASTY CONCEPTS 寫「Payment for purchase of property and equipment」。
             "Capital Expenditure": ["purchase of/prepayments for property, plant and equipment",
+                                    "payment for purchase of property and equipment",
                                     "purchase of property, plant and equipment",
                                     "payments for property, plant and equipment",
-                                    "購買物業、廠房及設備"],
+                                    "additions to property, plant and equipment",
+                                    "purchase of property and equipment",
+                                    "購買物業、廠房及設備", "添置物業及設備"],
         },
     },
 }

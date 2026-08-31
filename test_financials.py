@@ -216,5 +216,40 @@ if not p:
 print(f"  {'✓' if p else '✗'} Operating Profit 別名含 'operating loss' 且無重複: {op_aliases}")
 
 print()
+print("別名擴充:港股常見的措辭變體(TASTY CONCEPTS 08096 實例)")
+for line, items, expect, note in [
+    ("Cost of inventories (9,055) (8,798)", IS, "Cost of Sales", "← 餐飲/零售業寫法"),
+    ("Property and equipment 15 5,621 12,758", BS, "Property Plant and Equipment", "← 不含廠房"),
+    ("Bank balances and cash 20 8,892 6,804", BS, "Cash and Equivalents", "← 港股小型股偏好"),
+    ("Other borrowing 24 1,920 –", BS, "Borrowings", ""),
+    ("Net assets 6,272 14,003", BS, "Total Equity", "← 恆等式上等同總權益"),
+    ("Payment for purchase of property and equipment (400) (3,080)", CF,
+     "Capital Expenditure", "← CAPEX 的冗長句型"),
+    ("Loss before taxation 10 (7,758) (6,156)", IS, "Profit Before Tax", "← 虧損年度"),
+]:
+    r = _match_line_item(line, items)
+    got = r[0] if r else None
+    p = got == expect
+    if not p:
+        ok = False
+    print(f"  {'✓' if p else '✗'} {line[:46]:48} → {got}"
+          + ("" if p else f"  (應為 {expect})") + f"   {note}")
+
+print()
+print("★ 這些相似字眼「絕對不可」互相誤配(為何不採用模糊比對)")
+for line, items, forbidden, note in [
+    ("Total assets less current liabilities 8,392 14,279", BS, "Total Assets",
+     "模糊比對相似度 100%,但意義完全不同"),
+    ("Trade and other payables 21 5,170 5,697", BS, "Trade Receivables",
+     "應付 vs 應收 —— 資產負債顛倒"),
+]:
+    r = _match_line_item(line, items)
+    got = r[0] if r else None
+    p = got != forbidden
+    if not p:
+        ok = False
+    print(f"  {'✓' if p else '✗'} {line[:46]:48} → {got}   ({note})")
+
+print()
 print("全部通過" if ok else "有測試失敗")
 sys.exit(0 if ok else 1)
