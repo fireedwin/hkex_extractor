@@ -95,6 +95,11 @@ _EXCLUDE_EXACT = {
     # ── 錯誤紀錄層:只決定 error message/ 那份 txt 長什麼樣 ──────
     # 完全不參與萃取,改它不該讓幾百份年報重跑。
     "error_report.py",
+    # ── 操作設定:下載哪一類文件、錯誤紀錄規則 ──────────────
+    # 這些原本跟科目別名擠在 config.py 裡,導致旺季調一次錯誤訊息
+    # 措辭就得重跑幾百份。拆成 ops_config.py 後在此排除。
+    # config.py 只是 re-export 它,那一行不會變,所以隔離成立。
+    "ops_config.py",
 }
 _EXCLUDE_PREFIX = ("test_", "check_", "diagnose_", "compare_", "make_", "_")
 
