@@ -29,6 +29,15 @@ python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --show-browser
 
 # 加上 AI 語意層
 python3 pipeline.py --stocks 00700 --from 20250101 --to 20251231 --ai
+
+# 增量處理(預設開啟):已分析過且邏輯沒變的檔案會自動跳過
+python3 pipeline.py --pdf downloads          # 第二次跑幾乎是零成本
+
+# 強制重跑全部(不理會帳本紀錄,但跑完仍會更新帳本)
+python3 pipeline.py --pdf downloads --force
+
+# 完全停用增量(不讀也不寫帳本)
+python3 pipeline.py --pdf downloads --no-incremental
 """
 
 # 必須最先 import —— 修正 Windows 輸出重新導向時的 cp950 編碼錯誤
@@ -81,8 +90,13 @@ logger = logging.getLogger("pipeline")
 logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
 
 
-def analyse(pdf_paths, out_dir, use_ai):
-    """呼叫既有的分析引擎處理每一份 PDF。"""
+def analyse(pdf_paths, out_dir, use_ai, ledger=None):
+    """
+    呼叫既有的分析引擎處理每一份 PDF。
+
+    ledger 不是 None 時,每分析成功一份就立刻寫入帳本 —— 不等整批跑完。
+    跑到第 150 份才當掉時,前面 149 份的成果要保得住;重跑只補剩下的。
+    """
     from run import process_one
 
     results, failures = [], []
@@ -93,7 +107,14 @@ def analyse(pdf_paths, out_dir, use_ai):
             continue
         logger.info(f"[{i}/{len(pdf_paths)}] 分析 {os.path.basename(p)}")
         try:
-            results.append(process_one(p, out_dir, use_ai))
+            out = process_one(p, out_dir, use_ai)
+            results.append(out)
+            if ledger is not None:
+                # 只有分析成功才記錄。失敗的不寫進帳本,下次一定會重跑。
+                try:
+                    ledger.record(p, out, use_ai=use_ai)
+                except Exception as e:
+                    logger.warning(f"  帳本寫入失敗(不影響分析結果): {e}")
         except Exception as e:
             import traceback
             logger.error(f"  分析失敗: {e}")
@@ -122,7 +143,30 @@ def main():
     ap.add_argument("--downloads", default="downloads", help="PDF 存放資料夾")
     ap.add_argument("--out", default="output", help="Excel 輸出資料夾")
     ap.add_argument("--delay", type=float, default=2.0, help="查詢間隔秒數")
+    ap.add_argument("--force", action="store_true",
+                    help="忽略帳本紀錄,強制重新分析全部文件(跑完仍會更新帳本)")
+    ap.add_argument("--no-incremental", action="store_true",
+                    help="完全停用增量處理:不讀也不寫帳本")
+    ap.add_argument("--reset-ledger", action="store_true",
+                    help="清空帳本後結束(下次執行等同第一次跑)")
     args = ap.parse_args()
+
+    # ── 增量處理帳本 ───────────────────────────────────
+    ledger = None
+    if not args.no_incremental:
+        try:
+            from incremental import Ledger
+            ledger = Ledger(out_dir=args.out, root=HERE)
+        except Exception as e:
+            logger.warning(f"增量處理無法啟用({e}),本次全部重新分析")
+            ledger = None
+
+    if args.reset_ledger:
+        if ledger is None:
+            ap.error("--reset-ledger 不能與 --no-incremental 併用")
+        n = ledger.clear()
+        logger.info(f"帳本已清空,移除 {n} 筆紀錄")
+        return
 
     from run import expand_pdf_inputs
     pdfs = expand_pdf_inputs(args.pdf, recursive=args.recursive)
@@ -193,15 +237,57 @@ def main():
     logger.info(f"階段二:分析 — {len(pdfs)} 份文件")
     logger.info("=" * 60)
 
-    outputs, failures = analyse(pdfs, args.out, args.ai)
+    # 增量篩選:已分析過、分析邏輯沒變、輸出檔還在的直接跳過
+    skipped = []
+    if ledger is not None:
+        logger.info(f"分析邏輯版本 {ledger.logic_version}"
+                    f"(納入 {len(ledger.logic_files)} 個模組)")
+        if args.force:
+            logger.info("--force:忽略帳本,全部重新分析")
+        else:
+            todo, skipped = ledger.split(pdfs, use_ai=args.ai)
+            ms = ledger.stats["hash_seconds"] * 1000
+            logger.info(f"指紋比對 {len(pdfs)} 份,耗時 {ms:.0f} ms")
+            if skipped:
+                logger.info(f"跳過 {len(skipped)} 份(已分析過且結果仍有效)")
+                for p, reason, _ in skipped:
+                    logger.info(f"  ○ {os.path.basename(p)} — {reason}")
+            # 邏輯改過而必須重跑時要講清楚原因,否則使用者會以為增量壞了
+            relog = [p for p in todo
+                     if ledger.reasons.get(p) == "分析邏輯已更新"]
+            if relog:
+                logger.info(f"分析邏輯已更新,{len(relog)} 份既有結果視為過期,"
+                            f"重新分析以免給出舊版擷取結果")
+            pdfs = todo
+
+    if not pdfs:
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info(f"全部 {len(skipped)} 份都是最新結果,不需重新分析")
+        logger.info("=" * 60)
+        for _, _, outs in skipped:
+            for o in outs:
+                print(" -", o)
+        return
+
+    outputs, failures = analyse(pdfs, args.out, args.ai, ledger=ledger)
 
     # ── 總結 ───────────────────────────────────────────
     logger.info("")
     logger.info("=" * 60)
-    logger.info(f"完成:{len(outputs)} / {len(pdfs)} 份成功")
+    if skipped:
+        logger.info(f"完成:本次分析 {len(outputs)} / {len(pdfs)} 份成功,"
+                    f"另有 {len(skipped)} 份沿用既有結果")
+    else:
+        logger.info(f"完成:{len(outputs)} / {len(pdfs)} 份成功")
     logger.info("=" * 60)
     for o in outputs:
         print(" -", o)
+    # 使用者要的是「檔案在哪」,所以跳過的那幾份也要把 Excel 路徑印出來,
+    # 不能因為這次沒跑就從清單消失。
+    for _, _, outs in skipped:
+        for o in outs:
+            print(" -", o, "(沿用)")
 
     # 批次處理幾十份時,失敗訊息會被大量正常輸出淹沒,
     # 所以最後單獨再列一次 —— 使用者需要知道哪幾份要重跑。

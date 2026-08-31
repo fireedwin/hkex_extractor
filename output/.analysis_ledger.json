@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "entries": {
+    "95b0652da8294527": {
+      "file": "00700_TENCENT_20250408.pdf",
+      "size": 4754924,
+      "outputs": [
+        "output\\00700_TENCENT_20250408_extract.xlsx"
+      ],
+      "logic_version": "47cfa60e4bce7553",
+      "ai": false,
+      "analysed_at": "2026-08-31T11:42:30"
+    },
+    "effb379ca03c94a1": {
+      "file": "08096_TASTY_CONCEPTS_20260731.pdf",
+      "size": 866048,
+      "outputs": [
+        "output\\08096_TASTY_CONCEPTS_20260731_extract.xlsx"
+      ],
+      "logic_version": "47cfa60e4bce7553",
+      "ai": false,
+      "analysed_at": "2026-08-31T11:42:37"
+    }
+  }
+}
