@@ -393,9 +393,15 @@ def integrity_checks(res: "FinResult") -> List[tuple]:
         tol = max(2.0, abs(pbt) * 0.02)
         ok = close(pfy, pbt + tax, tol) or close(pfy, pbt - tax, tol)
         sign = "+" if close(pfy, pbt + tax, tol) else "−"
+        result = pbt + tax if sign == "+" else pbt - tax
+        # 顯示層要自洽:稅項存成負數時,「pbt + tax」在畫面上寫成
+        # 「241,485 + 45,018 = 196,467」字面根本不成立,看的人會以為
+        # 工具算錯。工作底稿是給人讀的,顯示的算式必須自己對得起來 ——
+        # 所以符號依「結果比 pbt 大還是小」決定,數值一律取絕對值。
+        disp = "+" if result >= pbt else "−"
         out.append(("除稅前溢利 ± 稅項 = 年內溢利", ok,
-                    f"{pbt:,.0f} {sign} {abs(tax):,.0f} = "
-                    f"{pbt + tax if sign == '+' else pbt - tax:,.0f} vs {pfy:,.0f}"))
+                    f"{pbt:,.0f} {disp} {abs(tax):,.0f} = "
+                    f"{result:,.0f} vs {pfy:,.0f}"))
 
     # 三大報表在年報裡一定是連續排在一起的。
     # 若某一張的頁碼離其他兩張很遠,幾乎可以確定是抓錯頁 ——
@@ -446,6 +452,119 @@ def _pick_consistent_pages(candidates: Dict[str, List[int]]) -> Dict[str, List[i
         # 有靠近基準的候選就用它們,否則保留原判(不硬改)
         fixed[stmt] = near if near else pages
     return fixed
+
+
+def _derive_debt_items(pages: List[Page], bs_pages: List[int],
+                       page_map: dict, existing: List["FinItem"],
+                       verbose: bool = True) -> List["FinItem"]:
+    """
+    衍生計息負債明細與淨負債 —— 純加法,不動主解析流程。
+
+    為什麼需要:資產負債表把借款拆成「非流動」與「流動」兩段,兩行的
+    文字一模一樣(都叫 Borrowings),只差在所屬區段。主解析器取第一個
+    命中,結果只拿到非流動的那筆 —— 騰訊的例子是記成 146,521,
+    但總計息負債其實是 338,615(還有流動借款 52,885、應付票據
+    130,586 + 8,623)。
+
+    **影響是企業價值(EV)算不出來**,那是估值最基礎的一步,所以這裡
+    改成把整張資產負債表掃過一遍,依「Non-current / Current liabilities」
+    區段標題分類,兩段都抓並加總。
+
+    ⚠ 淨負債採簡化定義:計息負債 − 現金及等價物。
+    公司自行揭露的 net cash 常包含定期存款與庫務用途投資,口徑更寬,
+    數字會不一樣。這裡刻意不去模仿公司口徑 —— 工作底稿要能說清楚
+    自己用的是哪個定義,而不是湊出一個看起來一樣的數字。
+    """
+    DEBT_PATTERNS = [
+        ("Borrowings", re.compile(r"^\s*borrowings\b", re.I)),
+        ("Notes Payable", re.compile(r"^\s*notes?\s+payable\b", re.I)),
+    ]
+    NONCUR = re.compile(r"^\s*non-?current\s+liabilit", re.I)
+    CURRENT = re.compile(r"^\s*current\s+liabilit", re.I)
+
+    found = []          # (label, section, value, prior, page_index, line)
+    for pidx in bs_pages:
+        page = page_map.get(pidx)
+        if page is None:
+            continue
+        section = None
+        for raw in page.text.split("\n"):
+            line = raw.strip()
+            if not line:
+                continue
+            if NONCUR.match(line):
+                section = "Non-current"
+                continue
+            if CURRENT.match(line):
+                section = "Current"
+                continue
+            for label, rx in DEBT_PATTERNS:
+                if rx.match(line) and section:
+                    nums = _numbers_in_line(line)
+                    if nums:
+                        found.append((label, section, nums[0],
+                                      nums[1] if len(nums) > 1 else None,
+                                      pidx, line))
+                    break
+
+    if not found:
+        return []
+
+    out = []
+    seen = set()
+    for label, section, cur, pri, pidx, line in found:
+        key = (label, section)
+        if key in seen:          # 同一區段重複出現時只取第一筆
+            continue
+        seen.add(key)
+        out.append(FinItem(
+            statement="Balance Sheet",
+            item=f"{label} — {section}",
+            current_year=cur,
+            prior_year=pri,
+            page_index=pidx,
+            page_cite=page_map[pidx].cite,
+            source_line=re.sub(r"  +", " ", line),
+        ))
+
+    total_cur = sum(i.current_year for i in out if i.current_year is not None)
+    total_pri = sum(i.prior_year for i in out if i.prior_year is not None)
+    parts = "、".join(i.item for i in out)
+    out.append(FinItem(
+        statement="Balance Sheet",
+        item="Total Interest-bearing Debt",
+        current_year=total_cur,
+        prior_year=total_pri or None,
+        page_index=out[0].page_index,
+        page_cite=out[0].page_cite,
+        source_line=f"[衍生] {parts} 加總",
+    ))
+
+    # 淨負債 = 計息負債 − 現金及等價物(簡化定義,見 docstring)
+    cash = next((i for i in existing
+                 if i.statement == "Balance Sheet"
+                 and i.item == "Cash and Equivalents"), None)
+    if cash and cash.current_year is not None:
+        net_cur = total_cur - cash.current_year
+        net_pri = (total_pri - cash.prior_year
+                   if total_pri and cash.prior_year is not None else None)
+        out.append(FinItem(
+            statement="Balance Sheet",
+            item="Net Debt / (Net Cash) — 簡化定義",
+            current_year=net_cur,
+            prior_year=net_pri,
+            page_index=cash.page_index,
+            page_cite=cash.page_cite,
+            source_line=f"[衍生] 計息負債 {total_cur:,.0f} − 現金及等價物 "
+                        f"{cash.current_year:,.0f}。**僅扣現金及等價物**,"
+                        f"未計入定期存款與庫務用途投資 —— 公司自行揭露的 "
+                        f"net cash 口徑較寬,數字會不同,引用前請確認要用哪個定義。",
+        ))
+
+    if verbose:
+        print(f"[financials] 衍生計息負債 {len(out)} 項:"
+              f"總計息負債 {total_cur:,.0f}")
+    return out
 
 
 def extract_financials(pages: List[Page], verbose: bool = True) -> FinResult:
@@ -573,6 +692,18 @@ def extract_financials(pages: List[Page], verbose: bool = True) -> FinResult:
         missing = [i for i in cfg["line_items"] if i not in found]
         if missing:
             res.missing[stmt] = missing
+
+    # 衍生科目:計息負債明細 + 淨負債。放在主迴圈之後,純加法 ——
+    # 不影響上面已經逐項驗證過的擷取結果。
+    try:
+        bs_pages = list(all_cands.get("Balance Sheet") or [])
+        if bs_pages:
+            res.items.extend(
+                _derive_debt_items(pages, bs_pages, page_map, res.items, verbose))
+    except Exception as e:
+        # 衍生失敗不能拖垮主要結果 —— 這是加值,不是必要條件
+        if verbose:
+            print(f"[financials] 衍生計息負債失敗(不影響主結果): {e}")
 
     if verbose:
         print(f"[financials] 共擷取 {len(res.items)} 個財務科目")

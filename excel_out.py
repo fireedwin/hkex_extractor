@@ -246,25 +246,35 @@ def build_workbook(out_path: str,
     ws = wb.create_sheet("Valuation Params 估值參數")
     ws["A1"] = "估值參數 Benchmark — 可直接併入行內參數資料庫"
     ws["A1"].font = TITLE
-    ws["A2"] = "數字由正則式從原文精確擷取,並經合理範圍檢查;非由 AI 生成。"
+    ws["A2"] = ("數字由正則式從原文精確擷取,並經合理範圍檢查;非由 AI 生成。"
+                "「性質」欄標為上限/下限者(原文寫「不超過」「至少」)並非採用值,"
+                "不可直接引用。")
     ws["A2"].font = NOTE
 
-    cols = ["參數 Parameter", "中文", "下限 Low (%)", "上限 High (%)",
+    # 「性質」欄:原文寫「不超過 22%」與「22%」對估值師是兩件事,
+    # 前者是天花板、後者是採用值。沒有這一欄,Low = High 會讀起來
+    # 像單一確定假設。
+    cols = ["參數 Parameter", "中文", "性質 Nature", "下限 Low (%)", "上限 High (%)",
             "原文數值", "信心度", "來源頁 Source Page", "上下文 Context"]
-    _header(ws, 4, cols, [24, 18, 12, 12, 14, 10, 22, 90])
+    _header(ws, 4, cols, [24, 18, 10, 12, 12, 16, 10, 22, 88])
 
     r = 5
     for h in param_hits:
         ws.cell(row=r, column=1, value=h.parameter)
         ws.cell(row=r, column=2, value=h.parameter_zh)
-        ws.cell(row=r, column=3, value=h.value_low).number_format = '0.00'
-        ws.cell(row=r, column=4, value=h.value_high).number_format = '0.00'
-        ws.cell(row=r, column=5, value=h.raw_text)
-        c = ws.cell(row=r, column=6, value=h.confidence)
+        nat = getattr(h, "nature", "點估計")
+        cn = ws.cell(row=r, column=3, value=nat)
+        if nat in ("上限", "下限"):
+            # 標色提醒:這不是採用值,直接引用會誤用
+            cn.fill = PatternFill("solid", fgColor="FCE4D6")
+        ws.cell(row=r, column=4, value=h.value_low).number_format = '0.00'
+        ws.cell(row=r, column=5, value=h.value_high).number_format = '0.00'
+        ws.cell(row=r, column=6, value=h.raw_text)
+        c = ws.cell(row=r, column=7, value=h.confidence)
         if h.confidence == "Low":
             c.fill = PatternFill("solid", fgColor="FFF2CC")
-        ws.cell(row=r, column=7, value=h.page_cite)
-        ws.cell(row=r, column=8, value=h.context)
+        ws.cell(row=r, column=8, value=h.page_cite)
+        ws.cell(row=r, column=9, value=h.context)
         r += 1
     if r > 5:
         _style_body(ws, 5, r - 1, len(cols))
@@ -461,8 +471,12 @@ def build_workbook(out_path: str,
         name=FONT, bold=True, size=11)
     r += 1
     ws.cell(row=r, column=1,
-            value="可能原因:該公司未單獨揭露此科目 / 用了工具不認得的措辭 / "
-                  "位於跨頁或附註中。措辭問題可在 config.py 補上別名。").font = NOTE
+            value="狀態:未定位,需人手確認。工具只知道自己沒抓到,無法證實公司有無揭露 —— "
+                  "請務必翻閱原文,勿逕行認定未揭露。").font = NOTE
+    r += 1
+    ws.cell(row=r, column=1,
+            value="常見位置:報表附註(如 R&D、折舊、攤銷常見於費用性質附註或 EBITDA 調節表)、"
+                  "分部資料(如商譽按分部列示)、跨頁表格。措辭差異可在 config.py 補別名。").font = NOTE
     r += 2
 
     if missing:

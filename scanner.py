@@ -103,14 +103,29 @@ class ParamHit:
     page_cite: str
     context: str
     confidence: str
+    # 數值性質:點估計 / 上限 / 下限 / 區間。
+    # 原文「不超過 22%」與「22%」對估值師是兩件事:前者是天花板,
+    # 後者是採用值。底稿若一律記成 Low=High=22,讀起來像單一確定假設。
+    nature: str = "點估計"
 
 
 # 百分比:12.5%  /  12.5 per cent  /  12.5％(全形)
 _PCT = r"(\d{1,3}(?:\.\d{1,2})?)\s*(?:%|％|per\s?cent)"
 _PCT_RE = re.compile(_PCT, re.I)
-# 區間:"10.5% to 12.0%"  /  "10.5% - 12.0%"  /  "between 10.5% and 12.0%"
+# 區間:"10.5% to 12.0%" / "10.5% - 12.0%" / "between 10.5% and 12.0%"
+#      / "2.55% ~ 3.52%"(騰訊 2024 年報實際寫法)
+#
+# ⚠ 分隔符漏一個,後果是整個區間變成單點值:比對失敗會退回下面的
+# 「單一百分比」分支,只抓到下限。實測騰訊年報 21 筆參數全部
+# Low = High,原因就是原文用的 `~` 不在這份清單裡 ——
+# 波幅 32%~82% 被記成 32%,拿去做選擇權評價會嚴重低估。
+# 全形 ～、連字號各種變體都要收,寧可多列也不要漏。
+_RANGE_SEP = r"(?:to|and|至|~|～|-|‐|‑|–|—|―|­|/)"
 _RANGE_RE = re.compile(
-    _PCT + r"\s*(?:to|-|–|—|and|至)\s*" + _PCT, re.I)
+    _PCT + r"\s*" + _RANGE_SEP + r"\s*" + _PCT, re.I)
+
+# 「某個百分比 + 分隔符」結尾 —— 用來判斷緊接在後的百分比是不是區間上限
+_RANGE_TAIL_RE = re.compile(_PCT + r"\s*" + _RANGE_SEP + r"\s*$", re.I)
 
 # ── 表格式寫法(實測 C&D 年報時發現的漏抓) ──────────────────
 # 年報附註的表格常把百分號放在欄標題,數字本身不帶 %:
@@ -261,6 +276,16 @@ def _match_percent_backward(before: str):
 
     取「最靠近觸發詞」的那一個(最後一個 match),距離太遠就放棄 ——
     測試時發現放寬距離會把前一句的 WACC 誤判成折現率。
+
+    ⚠ 但不能撿「已經是某個區間上限」的數字。實測騰訊年報:
+
+        Expected volatility (Note) 38% ~ 39% 36% ~ 37%
+        Note: The expected volatility, measured as ...
+
+    附註裡的「expected volatility」也是觸發詞,它後方沒有百分比,
+    於是往回抓 —— 抓到的 37% 其實是**上年度比較欄的區間上限**,
+    卻被記成一筆獨立的當年度參數。同一頁因此同時出現 38~39 與 37,
+    無法分辨年度。這種重複計入會直接污染參數庫,所以要擋掉。
     """
     matches = list(_PCT_RE.finditer(before))
     if not matches:
@@ -269,8 +294,44 @@ def _match_percent_backward(before: str):
     gap = len(before) - m.end()
     if gap > BACKWARD_MAX_GAP:
         return None
+
+    # 這個百分比是不是某個區間的上限?是的話代表它已經被前面的
+    # 區間比對涵蓋(或屬於比較年度欄),不該再當成獨立的點估計。
+    head = before[:m.start()]
+    if _RANGE_TAIL_RE.search(head):
+        return None
+
     v = float(m.group(1))
     return v, v, m.group(0), "backward", gap
+
+
+# ── 數值性質(上限/下限/區間)───────────────────────────
+# 年報常寫「a pre-tax discount rate of not more than 22%」、
+# 「terminal growth rate of generally not more than 5%」。
+# 這是**上限**,不是採用值。實測騰訊 p.216 兩個參數都是這種寫法,
+# 但底稿記成 Low = High,讀起來像確定假設。
+_CAP_WORDS = re.compile(
+    r"(not\s+more\s+than|no\s+more\s+than|not\s+exceed(?:ing)?|"
+    r"up\s+to|maximum\s+of|at\s+most|capped\s+at|"
+    r"不超過|不高於|最高|上限)", re.I)
+_FLOOR_WORDS = re.compile(
+    r"(not\s+less\s+than|at\s+least|minimum\s+of|"
+    r"不低於|不少於|最低|下限)", re.I)
+
+
+def _value_nature(before: str, window: str, is_range: bool) -> str:
+    """
+    判斷數值性質。只看觸發詞前後很近的文字 —— 距離放寬會把
+    上一句的修飾語誤套到這一筆上。
+    """
+    if is_range:
+        return "區間"
+    near = (before[-70:] if before else "") + " " + window[:40]
+    if _CAP_WORDS.search(near):
+        return "上限"
+    if _FLOOR_WORDS.search(near):
+        return "下限"
+    return "點估計"
 
 
 def _plausible(param: str, v: float) -> bool:
@@ -289,6 +350,53 @@ def _plausible(param: str, v: float) -> bool:
     }
     lo, hi = bounds.get(param, (0, 100))
     return lo <= v <= hi
+
+
+# ── 年增率欄位誤判(實測騰訊年報時發現)────────────────────
+# MD&A 的分部表格排版是:
+#     Gross profit  Gross margin
+#     2024      2023   change   2024  2023
+#     181,657 161,919    12%     57%   54%
+# 攤平成一行之後是「VAS 181,657 161,919 12% 57% 54%」。
+# 觸發詞「gross margin」後方的第一個百分比是 **change 欄**,不是毛利率
+# —— 實測把 12% 和 19% 記成了毛利率。
+#
+# 這裡選擇**直接剔除**而不是改抓第二個百分比:欄位順序在不同公司、
+# 不同排版下並不保證一致,猜錯就是把錯的數字寫進參數庫。
+# 依照本專案一貫原則:寧可漏抓,不可錯抓 —— 漏抓會列進待覆核,
+# 錯抓則會被當成可用資料。
+_TRAILING_PCTS = re.compile(r"\s*(?:\d{1,3}(?:\.\d{1,2})?)\s*(?:%|％)")
+_BIG_NUMS_BEFORE = re.compile(
+    r"\d{1,3}(?:,\d{3})+\s+\(?\d{1,3}(?:,\d{3})+\)?\s*$")
+
+
+def _looks_like_change_column(window: str, raw: str) -> bool:
+    """
+    判斷抓到的百分比是不是表格裡的「年增率 / 環比」欄。
+
+    同時要滿足兩個條件才判定為 change 欄,避免誤殺正常的單一百分比:
+      1. 這個百分比**前面**緊接著兩個帶千分位的大額數字(本年、上年金額)
+      2. 這個百分比**後面**還連續跟著兩個以上的百分比(本年、上年的比率)
+
+    以 `VAS 181,657 161,919 12% 57% 54%` 為例:12% 兩個條件都成立;
+    而 57% 後面只剩一個百分比,不會被誤殺。
+    """
+    idx = window.find(raw)
+    if idx < 0:
+        return False
+    before = window[:idx]
+    if not _BIG_NUMS_BEFORE.search(before):
+        return False
+    after = window[idx + len(raw):]
+    n = 0
+    pos = 0
+    while n < 2:
+        m = _TRAILING_PCTS.match(after, pos)
+        if not m:
+            break
+        pos = m.end()
+        n += 1
+    return n >= 2
 
 
 def scan_valuation_params(pages: List[Page]) -> List[ParamHit]:
@@ -321,6 +429,9 @@ def scan_valuation_params(pages: List[Page]) -> List[ParamHit]:
                         matched = _match_percent(window)
                         if matched:
                             lo_v, hi_v, raw, how = matched
+                            # 表格年增率欄誤判:剔除,不猜第二個百分比
+                            if how == "percent" and _looks_like_change_column(window, raw):
+                                continue
                             dist = window.find(raw.split()[-1]) if raw else 999
                             if how == "table":
                                 conf = "Medium" if dist <= 60 else "Low"
@@ -351,6 +462,12 @@ def scan_valuation_params(pages: List[Page]) -> List[ParamHit]:
                         page_cite=page.cite,
                         context=flat[ctx_start: m.end() + PARAM_WINDOW],
                         confidence=conf,
+                        nature=_value_nature(
+                            flat[max(0, m.start() - 90): m.start()],
+                            window,
+                            is_range=(lo_v is not None and hi_v is not None
+                                      and lo_v != hi_v),
+                        ),
                     ))
 
     # 去重:同一頁、同一參數、同一數值只留信心度最高的一筆
